@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>할일 관리 앱</title>
+    <!-- 외부 CSS 파일 연결 -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 메인 컨테이너 -->
+    <div class="container">
+        <!-- 헤더 섹션 -->
+        <header class="app-header">
+            <h1>할일 관리 앱</h1>
+            <!-- 사용자 정보 및 로그아웃 -->
+            <div class="user-info">
+                <span id="welcomeMessage">환영합니다!</span>
+                <button onclick="logout()" class="btn-secondary">로그아웃</button>
+            </div>
+        </header>
+        
+        <!-- 할일 추가 폼 섹션 -->
+        <div class="todo-form">
+            <h2>새 할일 추가</h2>
+            <!-- 할일 제목 입력 필드 -->
+            <input type="text" id="todoTitle" placeholder="할일 제목" required>
+            <!-- 할일 설명 입력 필드 (선택사항) -->
+            <input type="text" id="todoDescription" placeholder="할일 설명 (선택사항)">
+            <!-- 우선순위 선택 -->
+            <select id="todoPriority">
+                <option value="1">🔴 높음</option>
+                <option value="2" selected>🟡 보통</option>
+                <option value="3">🟢 낮음</option>
+            </select>
+            <!-- 추가 버튼 - 클릭 시 addTodo() 함수 호출 -->
+            <button onclick="addTodo()">추가</button>
+        </div>
+
+        <!-- 할일 목록 섹션 -->
+        <div class="todo-list">
+            <h2>내 할일 목록</h2>
+            <!-- 검색 필드 -->
+            <input type="text" id="searchInput" placeholder="할일 검색..." onkeyup="filterTodos()">
+            <!-- JavaScript로 동적으로 할일 목록이 추가될 컨테이너 -->
+            <div id="todos"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript 파일 연결 -->
+    <!-- auth.js를 먼저 로드해야 script.js에서 authenticatedFetch 함수를 사용할 수 있음 -->
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,456 +1,435 @@
-# FastAPI 부트캠프 프로젝트 - 할일 관리 애플리케이션
+# 📝 FastAPI 부트캠프 프로젝트 - 할일 관리 애플리케이션
 
-## 📋 프로젝트 개요
+## 🌟 프로젝트 개요
 
-이 프로젝트는 FastAPI와 JavaScript를 활용한 풀스택 웹 애플리케이션 개발을 학습하기 위한 부트캠프 프로젝트입니다. 간단한 할일(Todo) 관리 애플리케이션을 통해 백엔드 API 개발, 프론트엔드 개발,
-그리고 AWS EC2 배포까지 전체 개발 과정을 경험할 수 있습니다.
+이 프로젝트는 **JWT 인증 기능이 포함된** FastAPI와 JavaScript를 활용한 풀스택 웹 애플리케이션입니다. 실제 서비스와 유사한 사용자 인증, 개인별 데이터 관리, 그리고 AWS EC2 배포까지 전체
+개발 과정을 경험할 수 있는 실무형 부트캠프 프로젝트입니다.
 
-### 주요 기능
+### 🎯 주요 기능
 
-- ✅ 할일 추가, 조회, 수정, 삭제 (CRUD)
-- ✅ 할일 완료 상태 토글
-- ✅ **우선순위 설정** (높음/보통/낮음) - 색상으로 구분
+#### 🔐 인증 시스템
+
+- ✅ **JWT 토큰 기반 인증** - 안전한 사용자 인증
+- ✅ **회원가입/로그인/로그아웃** - 완전한 사용자 관리 시스템
+- ✅ **사용자별 데이터 격리** - 개인 할일만 접근 가능
+- ✅ **토큰 자동 갱신** - 원활한 사용자 경험
+- ✅ **보안 라우팅** - 인증 상태에 따른 페이지 보호
+
+#### 📋 할일 관리
+
+- ✅ **개인별 할일 CRUD** - 생성, 조회, 수정, 삭제
+- ✅ **우선순위 설정** (🔴 높음/🟡 보통/🟢 낮음) - 색상으로 구분
 - ✅ **실시간 검색** 기능 (제목, 설명 검색)
 - ✅ **한국 시간(KST) 기준** 생성일자 표시
-- ✅ 반응형 웹 인터페이스
-- ✅ RESTful API 설계
-- ✅ 자동 API 문서화
+- ✅ **완료 상태 토글** - 직관적인 작업 관리
+
+#### 🎨 사용자 인터페이스
+
+- ✅ **현대적인 홈페이지** - 매력적인 랜딩 페이지
+- ✅ **반응형 디자인** - 모바일/태블릿/데스크톱 대응
+- ✅ **직관적인 UI/UX** - 사용자 친화적 인터페이스
+- ✅ **실시간 피드백** - 로딩, 에러, 성공 메시지
+
+#### ⚙️ 기술적 특징
+
 - ✅ **환경변수 기반 설정** (.env 파일 지원)
-- ✅ **AWS Lightsail 데이터베이스** 연동 지원
+- ✅ **다중 데이터베이스 지원** (SQLite/PostgreSQL)
+- ✅ **자동 API 문서화** (Swagger UI/ReDoc)
+- ✅ **AWS 클라우드 배포** 지원
+- ✅ **CI/CD 파이프라인** (GitHub Actions)
 
-### 기술 스택
+### 🛠️ 기술 스택
 
-- **백엔드**: FastAPI, SQLAlchemy, SQLite/PostgreSQL, Pydantic, Python-dotenv
-- **프론트엔드**: HTML5, CSS3, Vanilla JavaScript
-- **데이터베이스**: SQLite (개발용), PostgreSQL (AWS Lightsail 배포용)
-- **배포**: AWS EC2, Nginx
-- **CI/CD**: GitHub Actions
+#### 백엔드
 
-## 🚀 시작하기
+- **FastAPI** - 현대적이고 빠른 Python 웹 프레임워크
+- **SQLAlchemy** - 강력한 Python ORM
+- **JWT (PyJWT + python-jose)** - 토큰 기반 인증
+- **Passlib + bcrypt** - 안전한 비밀번호 해싱
+- **Pydantic v2** - 고성능 데이터 검증
+- **Python-dotenv** - 환경변수 관리
 
-### 사전 요구사항
+#### 데이터베이스
 
-- Python 3.11 이상
-- Node.js (선택사항, 프론트엔드 서버용)
+- **SQLite** - 개발용 로컬 데이터베이스
+- **PostgreSQL** - 프로덕션용 (AWS Lightsail)
 
-### 프로젝트 구조
+#### 프론트엔드
+
+- **HTML5/CSS3** - 시맨틱 마크업 및 현대적 스타일링
+- **Vanilla JavaScript ES6+** - 순수 자바스크립트 (프레임워크 독립적)
+- **CSS Grid/Flexbox** - 반응형 레이아웃
+- **Fetch API** - 비동기 HTTP 통신
+
+#### 배포 & DevOps
+
+- **AWS EC2** - 클라우드 서버 호스팅
+- **Nginx** - 웹 서버 및 리버스 프록시
+- **GitHub Actions** - CI/CD 자동화
+- **SSH 배포** - 안전한 서버 배포
+
+## 🚀 빠른 시작
+
+### 📋 사전 요구사항
+
+- **Python 3.11** 이상
+- **Git** - 버전 관리
+- **텍스트 에디터** (VS Code 권장)
+
+### 📂 프로젝트 구조
 
 ```
 fe-be-example/
-├── app/                    # 백엔드 애플리케이션
-│   ├── __init__.py        # 패키지 초기화
-│   ├── main.py            # FastAPI 메인 애플리케이션
-│   ├── models.py          # 데이터베이스 모델
-│   ├── database.py        # 데이터베이스 설정
-│   └── crud.py            # CRUD 작업 및 스키마
-├── frontend/              # 프론트엔드 애플리케이션
-│   ├── index.html         # 메인 HTML 페이지
-│   ├── style.css          # 스타일시트
-│   └── script.js          # JavaScript 로직
-├── .github/
-│   └── workflows/
-│       └── deploy.yml     # GitHub Actions 워크플로우
-├── requirements.txt       # Python 패키지 의존성
-└── README.md              # 프로젝트 문서
+├── 📁 app/                     # 🐍 백엔드 애플리케이션
+│   ├── __init__.py             # 패키지 초기화 파일
+│   ├── main.py                 # 🚀 FastAPI 메인 애플리케이션
+│   ├── models.py               # 🗄️ 데이터베이스 모델 (User, Todo)
+│   ├── database.py             # 🔌 데이터베이스 연결 설정
+│   ├── crud.py                 # 📊 CRUD 작업 및 Pydantic 스키마
+│   └── auth.py                 # 🔐 JWT 인증 시스템
+├── 📁 frontend/                # 🌐 프론트엔드 애플리케이션
+│   ├── home.html               # 🏠 홈페이지 (랜딩 페이지)
+│   ├── login.html              # 🔑 로그인 페이지
+│   ├── signup.html             # ✍️ 회원가입 페이지
+│   ├── index.html              # 📋 할일 관리 메인 페이지
+│   ├── style.css               # 🎨 통합 스타일시트
+│   ├── auth.js                 # 🔐 인증 관련 JavaScript
+│   └── script.js               # 📝 할일 관리 JavaScript
+├── 📁 .github/workflows/       # ⚙️ GitHub Actions
+│   └── deploy.yml              # 🚀 자동 배포 워크플로우
+├── requirements.txt            # 📦 Python 의존성
+├── .env.example               # 🔧 환경변수 템플릿
+├── .gitignore                 # 🚫 Git 제외 파일
+└── README.md                  # 📖 프로젝트 문서
 ```
 
 ## ⚙️ 환경 설정
 
-### 환경변수 파일 생성
-
-프로젝트 루트에 `.env` 파일을 생성하세요:
+### 1. 프로젝트 클론
 
 ```bash
-# .env.example 파일을 복사하여 .env 파일 생성
+git clone <repository-url>
+cd fe-be-example
+```
+
+### 2. 환경변수 설정
+
+`.env.example` 파일을 복사하여 `.env` 파일을 생성하세요:
+
+```bash
 cp .env.example .env
 ```
 
-`.env` 파일 내용:
+`.env` 파일 내용 예시:
+
 ```bash
-# 로컬 개발용 (기본값)
+# 🔐 JWT 보안 설정
+SECRET_KEY=your-super-secret-jwt-key-change-in-production
+
+# 💾 데이터베이스 설정 (로컬 개발용)
 DATABASE_URL=sqlite:///./todos.db
 
-# AWS Lightsail 데이터베이스 사용 시 (아래 값들을 실제 값으로 변경)
-# DATABASE_URL=postgresql://username:password@your-db-host:5432/todos_db
-# DB_USER=your_username  
+# 🌐 AWS Lightsail 데이터베이스 사용 시 (실제 값으로 변경)
+# DATABASE_URL=postgresql://username:password@host:5432/todos_db
+# DB_USER=your_username
 # DB_PASSWORD=your_password
-# DB_HOST=your_lightsail_db_host
+# DB_HOST=your-lightsail-db-host
 # DB_PORT=5432
 # DB_NAME=todos_db
 ```
 
-> ⚠️ **중요**: `.env` 파일은 절대 Git에 올리지 마세요! 이미 `.gitignore`에 포함되어 있습니다.
+> ⚠️ **보안 주의**: `.env` 파일은 절대 Git에 올리지 마세요!
 
-## 💻 로컬 개발 환경 실행
-
-### 백엔드 실행
+### 3. 백엔드 실행
 
 ```bash
-# 프로젝트 루트 디렉토리에서
-
-# 가상환경 생성 및 활성화 (권장)
+# 가상환경 생성 및 활성화
 python -m venv venv
+
 # Windows
 venv\Scripts\activate
-# Mac/Linux
+# Mac/Linux  
 source venv/bin/activate
 
-# 패키지 설치
+# 의존성 설치
 pip install -r requirements.txt
 
-# FastAPI 서버 실행
+# FastAPI 서버 실행 (개발 모드)
 uvicorn app.main:app --reload
 ```
 
-백엔드 서버가 실행되면:
+서버가 실행되면:
 
-- API: http://localhost:8000
-- API 문서 (Swagger UI): http://localhost:8000/docs
-- API 문서 (ReDoc): http://localhost:8000/redoc
+- 🌐 **API 서버**: http://localhost:8000
+- 📚 **API 문서 (Swagger)**: http://localhost:8000/docs
+- 📖 **API 문서 (ReDoc)**: http://localhost:8000/redoc
 
-### 프론트엔드 실행
+### 4. 프론트엔드 실행
 
 ```bash
 # frontend 디렉토리로 이동
 cd frontend
 
-# Python의 간단한 HTTP 서버 사용
+# Python HTTP 서버 실행
 python -m http.server 3000
-
-# 또는 Node.js의 http-server 사용 (npm install -g http-server 필요)
-http-server -p 3000
 ```
 
-프론트엔드가 실행되면:
+프론트엔드 접속:
 
-- 웹 애플리케이션: http://localhost:3000
+- 🏠 **홈페이지**: http://localhost:3000/home.html
+- 🔑 **로그인**: http://localhost:3000/login.html
+- ✍️ **회원가입**: http://localhost:3000/signup.html
+- 📋 **할일 관리**: http://localhost:3000/index.html
 
-## 📡 API 엔드포인트
+## 🎮 사용법
 
-### 기본 정보
+### 1. 첫 사용자 등록
 
-- **Base URL**: `http://localhost:8000`
-- **Content-Type**: `application/json`
+1. **홈페이지 접속**: http://localhost:3000/home.html
+2. **"회원가입하기"** 버튼 클릭
+3. **사용자 정보 입력**:
+    - 사용자명 (3자 이상)
+    - 이메일 주소
+    - 비밀번호 (6자 이상)
+    - 비밀번호 확인
+4. **회원가입 완료** 후 자동으로 로그인 페이지로 이동
 
-### 엔드포인트 목록
+### 2. 로그인
 
-| 메서드    | 엔드포인트         | 설명        | 요청 본문                                                                |
-|--------|---------------|-----------|----------------------------------------------------------------------|
-| GET    | `/`           | API 정보 확인 | -                                                                    |
-| GET    | `/todos/`     | 모든 할일 조회  | -                                                                    |
-| POST   | `/todos/`     | 새 할일 생성   | `{"title": "string", "description": "string"}`                       |
-| GET    | `/todos/{id}` | 특정 할일 조회  | -                                                                    |
-| PUT    | `/todos/{id}` | 할일 수정     | `{"title": "string", "description": "string", "completed": boolean}` |
-| DELETE | `/todos/{id}` | 할일 삭제     | -                                                                    |
+1. **로그인 페이지**에서 사용자명과 비밀번호 입력
+2. **JWT 토큰 발급** 및 자동 저장
+3. **할일 관리 페이지**로 자동 이동
 
-### API 사용 예시
+### 3. 할일 관리
 
-#### 새 할일 생성
+#### 할일 추가
+
+- 제목 입력 (필수)
+- 설명 입력 (선택)
+- 우선순위 선택 (높음/보통/낮음)
+- "추가" 버튼 클릭 또는 Enter 키
+
+#### 할일 관리
+
+- **완료 토글**: "완료" 버튼으로 상태 변경
+- **검색**: 실시간 제목/설명 검색
+- **삭제**: "삭제" 버튼 (확인 대화상자)
+- **우선순위별 정렬**: 자동으로 높은 우선순위부터 표시
+
+### 4. 로그아웃
+
+- 상단 **"로그아웃"** 버튼 클릭
+- JWT 토큰 자동 삭제
+- 로그인 페이지로 리다이렉트
+
+## 🔌 API 엔드포인트
+
+### 🔐 인증 관련
+
+| 메서드    | 엔드포인트     | 설명              | 인증 필요 |
+|--------|-----------|-----------------|-------|
+| `POST` | `/signup` | 회원가입            | ❌     |
+| `POST` | `/login`  | 로그인 (JWT 토큰 발급) | ❌     |
+| `GET`  | `/me`     | 현재 사용자 정보 조회    | ✅     |
+
+### 📝 할일 관리
+
+| 메서드      | 엔드포인트         | 설명         | 인증 필요 |
+|----------|---------------|------------|-------|
+| `GET`    | `/todos/`     | 내 할일 목록 조회 | ✅     |
+| `POST`   | `/todos/`     | 새 할일 생성    | ✅     |
+| `GET`    | `/todos/{id}` | 특정 할일 조회   | ✅     |
+| `PUT`    | `/todos/{id}` | 할일 수정      | ✅     |
+| `DELETE` | `/todos/{id}` | 할일 삭제      | ✅     |
+
+### 📋 API 사용 예시
+
+#### 회원가입
+
+```bash
+curl -X POST "http://localhost:8000/signup" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "username": "testuser",
+       "email": "test@example.com", 
+       "password": "securepassword"
+     }'
+```
+
+#### 로그인
+
+```bash
+curl -X POST "http://localhost:8000/login" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "username": "testuser",
+       "password": "securepassword"
+     }'
+```
+
+#### 할일 생성 (인증 필요)
 
 ```bash
 curl -X POST "http://localhost:8000/todos/" \
      -H "Content-Type: application/json" \
-     -d '{"title": "FastAPI 공부하기", "description": "부트캠프 과제 완성"}'
+     -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+     -d '{
+       "title": "FastAPI 공부하기",
+       "description": "부트캠프 과제 완성",
+       "priority": 1
+     }'
 ```
 
-#### 모든 할일 조회
+## 🚀 AWS EC2 배포
 
-```bash
-curl "http://localhost:8000/todos/"
-```
-
-#### 할일 완료 상태 변경
-
-```bash
-curl -X PUT "http://localhost:8000/todos/1" \
-     -H "Content-Type: application/json" \
-     -d '{"completed": true}'
-```
-
-## 🎯 사용 시나리오
-
-### 1. 첫 실행
-
-1. 백엔드와 프론트엔드 서버를 실행합니다.
-2. 웹 브라우저에서 http://localhost:3000 에 접속합니다.
-3. 빈 할일 목록이 표시됩니다.
-
-### 2. 할일 추가
-
-1. "새 할일 추가" 섹션에서 제목을 입력합니다.
-2. 선택적으로 설명을 추가합니다.
-3. "추가" 버튼을 클릭하거나 Enter 키를 누릅니다.
-4. 새 할일이 목록에 즉시 나타납니다.
-
-### 3. 할일 관리
-
-1. **완료 표시**: 각 할일의 "완료" 버튼을 클릭하여 완료 상태로 변경합니다.
-2. **미완료로 변경**: 완료된 할일의 "미완료로 변경" 버튼을 클릭합니다.
-3. **삭제**: "삭제" 버튼을 클릭하고 확인 대화상자에서 확인합니다.
-
-### 4. API 문서 확인
-
-1. http://localhost:8000/docs 에 접속합니다.
-2. Swagger UI에서 각 API 엔드포인트를 테스트할 수 있습니다.
-3. "Try it out" 버튼으로 직접 API를 호출해볼 수 있습니다.
-
-## 🛠️ 개발 가이드
-
-### 백엔드 수정
-
-1. `app/` 디렉토리의 파일을 수정합니다.
-2. 새로운 모델이나 엔드포인트 추가 시:
-    - `models.py`: 데이터베이스 모델 정의
-    - `crud.py`: 비즈니스 로직 및 스키마 정의
-    - `main.py`: API 엔드포인트 추가
-
-### 프론트엔드 수정
-
-1. `frontend/` 디렉토리의 파일을 수정합니다.
-2. 스타일 변경: `style.css`
-3. 기능 추가: `script.js`
-4. 레이아웃 변경: `index.html`
-
-### 데이터베이스 초기화
-
-```bash
-# SQLite 데이터베이스 파일 삭제
-rm todos.db
-
-# 서버 재시작하면 자동으로 새 DB 생성
-```
-
-## 📚 학습 목표
-
-이 프로젝트를 통해 다음을 학습할 수 있습니다:
-
-1. **FastAPI 기초**
-    - API 라우팅 및 엔드포인트 생성
-    - Pydantic을 활용한 데이터 검증
-    - 자동 API 문서화
-
-2. **데이터베이스 연동**
-    - SQLAlchemy ORM 사용법
-    - CRUD 패턴 구현
-    - 데이터베이스 세션 관리
-
-3. **프론트엔드 개발**
-    - Fetch API를 사용한 비동기 통신
-    - DOM 조작 및 이벤트 처리
-    - 반응형 UI 구현
-
-4. **AWS EC2 배포**
-    - EC2 인스턴스 설정
-    - Nginx 웹 서버 구성
-    - GitHub Actions를 통한 자동 배포
-
-5. **CI/CD**
-    - GitHub Actions 워크플로우 작성
-    - 자동화된 테스트 및 배포
-
-## 🔄 다음 단계
-
-프로젝트를 확장하고 싶다면:
-
-1. **인증 시스템 추가**
-    - JWT 토큰 기반 인증
-    - 사용자별 할일 관리
-
-2. **데이터베이스 업그레이드**
-    - PostgreSQL로 마이그레이션
-    - Alembic으로 데이터베이스 마이그레이션 관리
-
-3. **프론트엔드 프레임워크**
-    - React, Vue.js, 또는 Svelte로 재구현
-    - 상태 관리 라이브러리 도입
-
-4. **테스트 추가**
-    - pytest로 백엔드 유닛 테스트
-    - Jest로 프론트엔드 테스트
-
-5. **실제 배포**
-    - AWS, GCP, 또는 Heroku에 배포
-    - 도메인 연결 및 HTTPS 설정
-
-## 🚀 AWS EC2 배포 가이드
-
-### EC2 인스턴스 설정
+### 🔧 EC2 설정
 
 1. **EC2 인스턴스 생성**
-    - Ubuntu 22.04 LTS AMI 선택
-    - t2.micro 인스턴스 타입 (프리 티어)
-    - 키 페어(.pem) 생성 및 다운로드
+    - **AMI**: Ubuntu 22.04 LTS
+    - **인스턴스 타입**: t2.micro (프리 티어)
+    - **키 페어**: 새로 생성 및 다운로드 (.pem)
 
 2. **보안 그룹 설정**
    ```
-   - SSH (22번 포트): 내 IP에서만
-   - HTTP (80번 포트): 모든 소스
-   - HTTPS (443번 포트): 모든 소스
-   - 커스텀 TCP (8000번 포트): 모든 소스 (개발용)
+   - SSH (22): 내 IP만 허용
+   - HTTP (80): 모든 소스 (0.0.0.0/0)
+   - HTTPS (443): 모든 소스 (0.0.0.0/0)
+   - Custom TCP (8000): 모든 소스 (개발/테스트용)
    ```
 
 3. **EC2 접속**
    ```bash
-   # 키 파일 권한 설정
    chmod 400 your-key.pem
-   
-   # SSH 접속
-   ssh -i your-key.pem ubuntu@your-ec2-public-ip
+   ssh -i your-key.pem ubuntu@your-ec2-ip
    ```
 
-### 서버 설정
+### 🛠️ 서버 환경 구성
 
-1. **필수 패키지 설치**
-   ```bash
-   # 시스템 업데이트
-   sudo apt update && sudo apt upgrade -y
-   
-   # Python 및 필수 패키지 설치
-   sudo apt install python3-pip python3-venv nginx git -y
-   ```
+```bash
+# 시스템 업데이트
+sudo apt update && sudo apt upgrade -y
 
-2. **프로젝트 셋업**
-   ```bash
-   # 프로젝트 클론
-   git clone https://github.com/your-username/your-repo.git ~/fastapi-app
-   cd ~/fastapi-app
-   
-   # 가상환경 생성 및 의존성 설치
-   python3 -m venv venv
-   source venv/bin/activate
-   pip install -r requirements.txt
-   ```
+# 필수 패키지 설치
+sudo apt install python3-pip python3-venv nginx git -y
 
-3. **Nginx 설정**
-   ```bash
-   # 기본 Nginx 사이트 비활성화
-   sudo rm /etc/nginx/sites-enabled/default
-   
-   # Nginx 설정 파일 생성
-   sudo nano /etc/nginx/sites-available/fastapi-app
-   ```
+# 프로젝트 클론
+git clone https://github.com/your-username/your-repo.git ~/fastapi-app
+cd ~/fastapi-app
 
-   다음 내용 추가:
-   ```nginx
-   server {
-       listen 80;
-       server_name _;  # 모든 도메인 허용
-       
-       # 프론트엔드 정적 파일 서빙
-       location / {
-           root /home/ubuntu/fastapi-app/frontend;
-           index index.html;
-           try_files $uri $uri/ /index.html;
-       }
-       
-       # 백엔드 API 리버스 프록시
-       location /todos {
-           proxy_pass http://127.0.0.1:8000;
-           proxy_set_header Host $http_host;
-           proxy_set_header X-Real-IP $remote_addr;
-           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-       }
-       
-       # API 문서 프록시
-       location /docs {
-           proxy_pass http://127.0.0.1:8000/docs;
-           proxy_set_header Host $http_host;
-       }
-       
-       location /openapi.json {
-           proxy_pass http://127.0.0.1:8000/openapi.json;
-           proxy_set_header Host $http_host;
-       }
-   }
-   ```
-
-   ```bash
-   # 사이트 활성화
-   sudo ln -s /etc/nginx/sites-available/fastapi-app /etc/nginx/sites-enabled/
-   
-   # Nginx 설정 테스트
-   sudo nginx -t
-   
-   # Nginx 재시작
-   sudo systemctl restart nginx
-   ```
-
-4. **FastAPI 서비스 설정**
-   ```bash
-   # systemd 서비스 파일 생성
-   sudo nano /etc/systemd/system/fastapi.service
-   ```
-
-   다음 내용 추가:
-   ```ini
-   [Unit]
-   Description=FastAPI app
-   After=network.target
-   
-   [Service]
-   User=ubuntu
-   WorkingDirectory=/home/ubuntu/fastapi-app
-   Environment="PATH=/home/ubuntu/fastapi-app/venv/bin"
-   ExecStart=/home/ubuntu/fastapi-app/venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000
-   Restart=always
-   
-   [Install]
-   WantedBy=multi-user.target
-   ```
-
-   ```bash
-   # 서비스 시작
-   sudo systemctl daemon-reload
-   sudo systemctl start fastapi
-   sudo systemctl enable fastapi
-   ```
-
-### GitHub Actions 배포 설정
-
-1. **GitHub Secrets 설정**
-   저장소 Settings > Secrets and variables > Actions에서 다음 secrets를 추가:
-   
-   **EC2 접속 관련:**
-   - `EC2_SSH_KEY`: EC2 인스턴스의 .pem 키 파일 전체 내용
-   - `EC2_HOST`: EC2 퍼블릭 IP 주소 또는 도메인
-   - `EC2_USER`: ubuntu (기본값)
-   
-   **데이터베이스 관련 (AWS Lightsail DB 사용 시):**
-   - `DATABASE_URL`: PostgreSQL 연결 URL (예: `postgresql://user:password@host:5432/dbname`)
-   - `DB_USER`: 데이터베이스 사용자명
-   - `DB_PASSWORD`: 데이터베이스 비밀번호
-   - `DB_HOST`: Lightsail 데이터베이스 호스트
-   - `DB_PORT`: 데이터베이스 포트 (보통 5432)
-   - `DB_NAME`: 데이터베이스 이름
-
-2. **배포 테스트**
-   ```bash
-   # master 브랜치에 push하면 자동 배포
-   git add .
-   git commit -m "Deploy to EC2"
-   git push origin master
-   ```
-
-### 프론트엔드 API URL 수정
-
-프론트엔드가 EC2에서 올바르게 작동하려면 `frontend/script.js`에서 API URL을 수정해야 합니다:
-
-```javascript
-// 개발 환경 (로컬)
-// const API_BASE_URL = 'http://localhost:8000';
-
-// 프로덕션 환경 (EC2 배포 시)
-const API_BASE_URL = '';  // Nginx가 /todos로 프록시하므로 별도 경로 불필요
+# Python 환경 설정
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
+
+### ⚙️ GitHub Actions 배포 설정
+
+**GitHub Secrets** 설정 (Settings > Secrets and variables > Actions):
+
+```
+🔑 EC2 접속
+- EC2_SSH_KEY: .pem 키 파일 전체 내용
+- EC2_HOST: EC2 퍼블릭 IP 주소
+- EC2_USER: ubuntu
+
+🗄️ 데이터베이스 (선택사항)
+- DATABASE_URL: PostgreSQL 연결 URL
+- DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
+
+🔐 보안
+- SECRET_KEY: JWT 서명용 비밀 키
+```
+
+**자동 배포 실행**:
+
+```bash
+git add .
+git commit -m "Deploy to EC2"
+git push origin master  # master 브랜치에 push하면 자동 배포
+```
+
+## 🎓 학습 목표
+
+### 백엔드 개발
+
+- ✅ **FastAPI 고급 기능** - 의존성 주입, 미들웨어, 예외 처리
+- ✅ **JWT 인증 시스템** - 토큰 생성, 검증, 갱신
+- ✅ **SQLAlchemy ORM** - 관계형 모델링, 세션 관리
+- ✅ **보안 베스트 프랙티스** - 비밀번호 해싱, CORS, 환경변수
+- ✅ **API 설계** - RESTful 원칙, 스키마 검증
+
+### 프론트엔드 개발
+
+- ✅ **모던 JavaScript** - ES6+, Fetch API, Promise/async-await
+- ✅ **SPA 라우팅** - 클라이언트 사이드 네비게이션
+- ✅ **상태 관리** - 로컬 스토리지, 토큰 관리
+- ✅ **반응형 디자인** - CSS Grid, Flexbox, 미디어 쿼리
+- ✅ **사용자 경험** - 로딩 상태, 에러 처리, 폼 검증
+
+### DevOps & 배포
+
+- ✅ **클라우드 배포** - AWS EC2, Nginx 설정
+- ✅ **CI/CD 파이프라인** - GitHub Actions, 자동화
+- ✅ **환경 관리** - 개발/스테이징/프로덕션 분리
+- ✅ **보안 설정** - SSH 키, 환경변수, 방화벽
+
+## 🔄 확장 아이디어
+
+### 단기 개선사항
+
+- 📱 **모바일 앱** - React Native/Flutter
+- 🌙 **다크 모드** - 테마 전환 기능
+- 📊 **할일 통계** - 완료율, 생산성 차트
+- 🔔 **알림 시스템** - 브라우저 푸시 알림
+
+### 장기 확장
+
+- 👥 **팀 협업** - 할일 공유, 팀 관리
+- 🔄 **실시간 동기화** - WebSocket, 멀티 디바이스
+- 🤖 **AI 기능** - 스마트 우선순위, 일정 추천
+- 📈 **고급 분석** - 생산성 인사이트, 리포팅
 
 ## 🤝 기여하기
 
-이 프로젝트는 교육 목적으로 만들어졌습니다. 개선 사항이나 버그를 발견하면 이슈를 생성하거나 PR을 보내주세요.
+1. **Fork** 이 저장소
+2. **Feature 브랜치** 생성 (`git checkout -b feature/AmazingFeature`)
+3. **변경사항 커밋** (`git commit -m 'Add some AmazingFeature'`)
+4. **브랜치에 Push** (`git push origin feature/AmazingFeature`)
+5. **Pull Request** 생성
 
 ## 📄 라이선스
 
 이 프로젝트는 교육 목적으로 자유롭게 사용할 수 있습니다.
 
+## 🆘 문제 해결
+
+### 일반적인 문제들
+
+**Q: JWT 토큰이 만료되었다는 에러가 나요**
+A: 토큰은 30분 후 만료됩니다. 로그아웃 후 다시 로그인하세요.
+
+**Q: CORS 에러가 발생해요**
+A: 백엔드가 실행 중인지 확인하고, API_BASE_URL이 올바른지 확인하세요.
+
+**Q: 데이터베이스 연결 오류**
+A: .env 파일의 DATABASE_URL이 올바른지 확인하세요.
+
+**Q: GitHub Actions 배포가 실패해요**
+A: GitHub Secrets가 모두 올바르게 설정되었는지 확인하세요.
+
 ---
 
-**Happy Coding! 🚀**
+## 🎉 완성을 축하합니다!
+
+이 프로젝트를 완성하신 것을 축하드립니다! 이제 여러분은:
+
+- 🏗️ **풀스택 개발자**로서 백엔드와 프론트엔드를 모두 다룰 수 있습니다
+- 🔐 **보안 인식**을 갖춘 개발자가 되었습니다
+- ☁️ **클라우드 배포** 경험을 쌓았습니다
+- 🤖 **자동화된 워크플로우**를 구축할 수 있습니다
+
+**다음 스텝**: 포트폴리오에 추가하고, 더 큰 프로젝트에 도전해보세요! 🚀
+
+---
+
+**Happy Coding! 💻✨**

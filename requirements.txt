@@ -1,32 +1,46 @@
 # FastAPI 프레임워크 - 고성능 웹 API 프레임워크
-fastapi==0.115.5
+# 최신 안정 버전으로 업데이트 (2025년 1월 기준)
+fastapi==0.115.6
 
 # Uvicorn - ASGI 서버, FastAPI 애플리케이션 실행
-uvicorn[standard]==0.32.1
+# [standard] 옵션으로 성능 최적화 의존성 포함
+uvicorn[standard]==0.33.0
 
 # SQLAlchemy - Python SQL 툴킷 및 ORM
+# 2.0 버전은 현대적인 async/await 지원
 sqlalchemy==2.0.36
 
 # Pydantic - 데이터 검증 및 설정 관리
-pydantic==2.10.3
+# v2는 성능이 크게 개선된 메이저 버전
+pydantic==2.10.4
 
-# Python-multipart - 파일 업로드 지원
-python-multipart==0.0.19
+# Python-multipart - 파일 업로드 및 폼 데이터 처리 지원
+python-multipart==0.0.20
 
 # Python-dotenv - .env 파일에서 환경변수 로드
+# 개발환경과 운영환경 설정 분리에 필수
 python-dotenv==1.0.1
 
 # psycopg2-binary - PostgreSQL 데이터베이스 드라이버 (Lightsail DB 연결용)
-psycopg2-binary==2.9.9
+# binary 버전은 컴파일 없이 바로 설치 가능
+psycopg2-binary==2.9.10
 
 # PyJWT - JWT 토큰 생성 및 검증 (인증용)
-PyJWT==2.9.0
+# 가벼운 JWT 라이브러리, python-jose보다 빠름
+PyJWT==2.10.1
 
-# python-jose - JWT 토큰 처리 (FastAPI 호환)
+# python-jose - JWT 토큰 처리 (FastAPI 공식 문서 권장)
+# cryptography 옵션으로 고급 암호화 지원
 python-jose[cryptography]==3.4.0
 
 # passlib - 비밀번호 해싱 및 검증
+# bcrypt 옵션으로 안전한 해싱 알고리즘 사용
 passlib[bcrypt]==1.7.4
 
 # email-validator - 이메일 주소 유효성 검증
+# Pydantic의 EmailStr 타입 지원에 필요
 email-validator==2.2.0
+
+# bcrypt - 비밀번호 해싱을 위한 암호화 라이브러리
+# passlib[bcrypt]와 함께 사용되는 핵심 백엔드
+bcrypt==4.3.0

@@ -21,7 +21,7 @@ let allTodos = [];
 document.addEventListener('DOMContentLoaded', function() {
     // 메인 페이지에서만 할일 목록 로드
     const currentPage = window.location.pathname.split('/').pop();
-    if (currentPage === 'index.html' || currentPage === '') {
+    if (currentPage === 'main.html') {
         loadTodos();
     }
 });

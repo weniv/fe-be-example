@@ -2,15 +2,23 @@
  * 인증 관련 JavaScript 모듈
  * 
  * 이 파일의 역할:
- * 1. 로그인, 회원가입, 로그아웃 기능을 구현합니다
- * 2. JWT 토큰을 로컬 스토리지에 저장하고 관리합니다
- * 3. API 요청 시 토큰을 자동으로 포함시킵니다
- * 4. 인증이 필요한 페이지에서 로그인 상태를 확인합니다
+ * 1. 🔐 사용자 로그인, 회원가입, 로그아웃 기능을 구현합니다
+ * 2. 🗄️ JWT 토큰을 로컬 스토리지에 안전하게 저장하고 관리합니다
+ * 3. 🌐 API 요청 시 Authorization 헤더에 토큰을 자동으로 포함시킵니다
+ * 4. 🛡️ 인증이 필요한 페이지에서 로그인 상태를 확인하고 보호합니다
+ * 5. 🔄 토큰 만료나 오류 시 자동으로 로그아웃 처리합니다
+ * 
+ * 보안 특징:
+ * - 토큰은 브라우저의 로컬 스토리지에 저장됩니다
+ * - 모든 API 요청에 Bearer 토큰이 자동으로 포함됩니다
+ * - 토큰이 유효하지 않으면 자동으로 로그인 페이지로 리다이렉트됩니다
+ * - 비밀번호는 평문으로 저장되지 않고 서버에서 해싱됩니다
  * 
  * 초보자를 위한 설명:
- * - JWT: JSON Web Token, 사용자 인증 정보를 담은 토큰
- * - 로컬 스토리지: 브라우저에 데이터를 저장하는 공간
- * - API: 백엔드 서버와 통신하기 위한 인터페이스
+ * - JWT: JSON Web Token, 사용자 인증 정보를 안전하게 담은 토큰
+ * - 로컬 스토리지: 브라우저에 데이터를 저장하는 영구 저장소 (쿠키와 유사)
+ * - API: 백엔드 서버와 통신하기 위한 인터페이스 (데이터 요청/응답)
+ * - Bearer 토큰: HTTP 헤더에 포함되는 인증 방식 ("Bearer " + 토큰 문자열)
  */
 
 // API 기본 URL (백엔드 서버 주소)
@@ -189,7 +197,7 @@ async function handleLogin(event) {
         if (response.ok) {
             // 로그인 성공: 토큰 저장 후 메인 페이지로 이동
             setToken(data.access_token);
-            window.location.href = 'index.html';
+            window.location.href = 'main.html';
         } else {
             // 로그인 실패
             showError(data.detail || '로그인에 실패했습니다.');
@@ -261,7 +269,7 @@ function requireLogin() {
 function redirectIfLoggedIn() {
     if (isLoggedIn()) {
         // 이미 로그인한 경우 메인 페이지로 이동
-        window.location.href = 'index.html';
+        window.location.href = 'main.html';
     }
 }
 
@@ -315,7 +323,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentPage = window.location.pathname.split('/').pop();
     
     // 현재 페이지에 따라 적절한 초기화 실행
-    if (currentPage === 'index.html' || currentPage === '') {
+    if (currentPage === 'main.html') {
         // 메인 페이지: 로그인 확인 후 사용자 정보 로드
         if (requireLogin()) {
             loadUserInfo();
