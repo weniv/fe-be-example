@@ -1,0 +1,32 @@
+# FastAPI 프레임워크 - 고성능 웹 API 프레임워크
+fastapi==0.115.5
+
+# Uvicorn - ASGI 서버, FastAPI 애플리케이션 실행
+uvicorn[standard]==0.32.1
+
+# SQLAlchemy - Python SQL 툴킷 및 ORM
+sqlalchemy==2.0.36
+
+# Pydantic - 데이터 검증 및 설정 관리
+pydantic==2.10.3
+
+# Python-multipart - 파일 업로드 지원
+python-multipart==0.0.19
+
+# Python-dotenv - .env 파일에서 환경변수 로드
+python-dotenv==1.0.1
+
+# psycopg2-binary - PostgreSQL 데이터베이스 드라이버 (Lightsail DB 연결용)
+psycopg2-binary==2.9.9
+
+# PyJWT - JWT 토큰 생성 및 검증 (인증용)
+PyJWT==2.9.0
+
+# python-jose - JWT 토큰 처리 (FastAPI 호환)
+python-jose[cryptography]==3.4.0
+
+# passlib - 비밀번호 해싱 및 검증
+passlib[bcrypt]==1.7.4
+
+# email-validator - 이메일 주소 유효성 검증
+email-validator==2.2.0

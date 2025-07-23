@@ -1,0 +1,373 @@
+/* 전체 요소 초기화 및 박스 모델 설정 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* 패딩과 테두리를 포함한 박스 크기 계산 */
+}
+
+/* 기본 body 스타일 */
+body {
+    font-family: Arial, sans-serif; /* 기본 폰트 설정 */
+    background-color: #f5f5f5; /* 연한 회색 배경 */
+    color: #333; /* 진한 회색 텍스트 */
+    line-height: 1.6; /* 줄 간격 설정 */
+}
+
+/* 메인 컨테이너 스타일 */
+.container {
+    max-width: 800px; /* 최대 너비 제한 */
+    margin: 0 auto; /* 가운데 정렬 */
+    padding: 20px; /* 내부 여백 */
+}
+
+/* 앱 헤더 스타일 */
+.app-header {
+    display: flex; /* 플렉스 레이아웃 */
+    justify-content: space-between; /* 양 끝 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    margin-bottom: 30px; /* 하단 여백 */
+    padding-bottom: 20px; /* 하단 패딩 */
+    border-bottom: 2px solid #ecf0f1; /* 하단 테두리 */
+}
+
+/* 사용자 정보 영역 스타일 */
+.user-info {
+    display: flex; /* 플렉스 레이아웃 */
+    align-items: center; /* 세로 중앙 정렬 */
+    gap: 15px; /* 요소 간 간격 */
+}
+
+.user-info span {
+    color: #2c3e50; /* 진한 파란색 */
+    font-weight: 500; /* 중간 굵기 */
+}
+
+/* 인증 컨테이너 스타일 */
+.auth-container {
+    min-height: 100vh; /* 최소 높이를 화면 전체로 */
+    display: flex; /* 플렉스 레이아웃 */
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    padding: 20px; /* 내부 여백 */
+}
+
+/* 인증 폼 스타일 */
+.auth-form {
+    background: white; /* 흰색 배경 */
+    padding: 40px; /* 내부 여백 */
+    border-radius: 12px; /* 모서리 둥글게 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 */
+    width: 100%; /* 전체 너비 */
+    max-width: 400px; /* 최대 너비 제한 */
+}
+
+.auth-form h1 {
+    text-align: center; /* 중앙 정렬 */
+    margin-bottom: 10px; /* 하단 여백 */
+    color: #2c3e50; /* 진한 파란색 */
+}
+
+.auth-subtitle {
+    text-align: center; /* 중앙 정렬 */
+    color: #7f8c8d; /* 회색 */
+    margin-bottom: 30px; /* 하단 여백 */
+    font-size: 14px; /* 폰트 크기 */
+}
+
+/* 폼 그룹 스타일 */
+.form-group {
+    margin-bottom: 20px; /* 하단 여백 */
+}
+
+.form-group label {
+    display: block; /* 블록 요소로 표시 */
+    margin-bottom: 5px; /* 하단 여백 */
+    color: #2c3e50; /* 진한 파란색 */
+    font-weight: 500; /* 중간 굵기 */
+}
+
+.form-group input {
+    width: 100%; /* 전체 너비 */
+    padding: 12px; /* 내부 여백 */
+    border: 1px solid #ddd; /* 연한 회색 테두리 */
+    border-radius: 6px; /* 모서리 둥글게 */
+    font-size: 16px; /* 폰트 크기 */
+    transition: border-color 0.3s; /* 테두리 색상 변화 애니메이션 */
+}
+
+.form-group input:focus {
+    outline: none; /* 기본 아웃라인 제거 */
+    border-color: #3498db; /* 파란색 테두리 */
+}
+
+.form-help {
+    display: block; /* 블록 요소로 표시 */
+    margin-top: 5px; /* 상단 여백 */
+    color: #7f8c8d; /* 회색 */
+    font-size: 12px; /* 작은 폰트 크기 */
+}
+
+/* 인증 링크 스타일 */
+.auth-links {
+    text-align: center; /* 중앙 정렬 */
+    margin-top: 20px; /* 상단 여백 */
+}
+
+.auth-links a {
+    color: #3498db; /* 파란색 */
+    text-decoration: none; /* 밑줄 제거 */
+    font-weight: 500; /* 중간 굵기 */
+}
+
+.auth-links a:hover {
+    text-decoration: underline; /* 호버 시 밑줄 */
+}
+
+/* 메인 제목 스타일 */
+h1 {
+    text-align: center; /* 중앙 정렬 */
+    color: #2c3e50; /* 진한 파란색 */
+    margin-bottom: 30px; /* 하단 여백 */
+}
+
+/* 부제목 스타일 */
+h2 {
+    color: #34495e; /* 약간 밝은 파란색 */
+    margin-bottom: 20px; /* 하단 여백 */
+}
+
+/* 할일 추가 폼 스타일 */
+.todo-form {
+    background: white; /* 흰색 배경 */
+    padding: 20px; /* 내부 여백 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 부드러운 그림자 */
+    margin-bottom: 30px; /* 하단 여백 */
+}
+
+/* 입력 필드 및 선택 필드 스타일 */
+.todo-form input, .todo-form select {
+    width: 100%; /* 전체 너비 */
+    padding: 10px; /* 내부 여백 */
+    margin: 10px 0; /* 상하 여백 */
+    border: 1px solid #ddd; /* 연한 회색 테두리 */
+    border-radius: 4px; /* 살짝 둥근 모서리 */
+    font-size: 16px; /* 글자 크기 */
+}
+
+/* 검색 필드 스타일 */
+#searchInput {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+/* 추가 버튼 스타일 */
+.todo-form button {
+    background-color: #3498db; /* 파란색 배경 */
+    color: white; /* 흰색 글자 */
+    padding: 12px 24px; /* 내부 여백 */
+    border: none; /* 테두리 제거 */
+    border-radius: 4px; /* 둥근 모서리 */
+    cursor: pointer; /* 마우스 커서를 포인터로 */
+    font-size: 16px; /* 글자 크기 */
+}
+
+/* 추가 버튼 호버 효과 */
+.todo-form button:hover {
+    background-color: #2980b9; /* 더 진한 파란색 */
+}
+
+/* 공통 버튼 스타일 */
+.btn-primary {
+    width: 100%; /* 전체 너비 */
+    background-color: #3498db; /* 파란색 배경 */
+    color: white; /* 흰색 텍스트 */
+    padding: 12px 24px; /* 내부 여백 */
+    border: none; /* 테두리 제거 */
+    border-radius: 6px; /* 모서리 둥글게 */
+    cursor: pointer; /* 포인터 커서 */
+    font-size: 16px; /* 폰트 크기 */
+    font-weight: 500; /* 중간 굵기 */
+    transition: background-color 0.3s; /* 배경색 변화 애니메이션 */
+}
+
+.btn-primary:hover {
+    background-color: #2980b9; /* 호버 시 어두운 파란색 */
+}
+
+.btn-secondary {
+    background-color: #95a5a6; /* 회색 배경 */
+    color: white; /* 흰색 텍스트 */
+    padding: 8px 16px; /* 내부 여백 */
+    border: none; /* 테두리 제거 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    cursor: pointer; /* 포인터 커서 */
+    font-size: 14px; /* 폰트 크기 */
+    transition: background-color 0.3s; /* 배경색 변화 애니메이션 */
+}
+
+.btn-secondary:hover {
+    background-color: #7f8c8d; /* 호버 시 어두운 회색 */
+}
+
+/* 메시지 스타일 */
+.error-message {
+    background-color: #f8d7da; /* 연한 빨간색 배경 */
+    color: #721c24; /* 진한 빨간색 텍스트 */
+    padding: 12px; /* 내부 여백 */
+    border-radius: 6px; /* 모서리 둥글게 */
+    margin-top: 15px; /* 상단 여백 */
+    border: 1px solid #f5c6cb; /* 연한 빨간색 테두리 */
+}
+
+.success-message {
+    background-color: #d4edda; /* 연한 초록색 배경 */
+    color: #155724; /* 진한 초록색 텍스트 */
+    padding: 12px; /* 내부 여백 */
+    border-radius: 6px; /* 모서리 둥글게 */
+    margin-top: 15px; /* 상단 여백 */
+    border: 1px solid #c3e6cb; /* 연한 초록색 테두리 */
+}
+
+/* 할일 목록 컨테이너 스타일 */
+.todo-list {
+    background: white; /* 흰색 배경 */
+    padding: 20px; /* 내부 여백 */
+    border-radius: 8px; /* 둥근 모서리 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 부드러운 그림자 */
+}
+
+/* 개별 할일 아이템 스타일 */
+.todo-item {
+    background: #f8f9fa; /* 연한 회색 배경 */
+    padding: 15px; /* 내부 여백 */
+    margin: 10px 0; /* 상하 여백 */
+    border-radius: 4px; /* 둥근 모서리 */
+    border-left: 4px solid #3498db; /* 왼쪽 파란색 강조 테두리 */
+}
+
+/* 완료된 할일 아이템 스타일 */
+.todo-item.completed {
+    background: #d4edda; /* 연한 초록색 배경 */
+    border-left-color: #28a745; /* 초록색 테두리 */
+}
+
+/* 할일 제목 스타일 */
+.todo-item h3 {
+    margin-bottom: 5px; /* 하단 여백 */
+    color: #2c3e50; /* 진한 파란색 */
+}
+
+/* 완료된 할일 제목 스타일 */
+.todo-item.completed h3 {
+    text-decoration: line-through; /* 취소선 */
+    color: #6c757d; /* 회색 텍스트 */
+}
+
+/* 할일 설명 스타일 */
+.todo-item p {
+    margin-bottom: 10px; /* 하단 여백 */
+    color: #666; /* 중간 회색 */
+}
+
+/* 할일 액션 버튼 컨테이너 */
+.todo-actions {
+    display: flex; /* 플렉스 박스 사용 */
+    gap: 10px; /* 버튼 사이 간격 */
+}
+
+/* 액션 버튼 공통 스타일 */
+.todo-actions button {
+    padding: 6px 12px; /* 내부 여백 */
+    border: none; /* 테두리 제거 */
+    border-radius: 4px; /* 둥근 모서리 */
+    cursor: pointer; /* 포인터 커서 */
+    font-size: 14px; /* 글자 크기 */
+}
+
+/* 완료 버튼 스타일 */
+.complete-btn {
+    background-color: #28a745; /* 초록색 배경 */
+    color: white; /* 흰색 글자 */
+}
+
+/* 완료 버튼 호버 효과 */
+.complete-btn:hover {
+    background-color: #218838; /* 더 진한 초록색 */
+}
+
+/* 삭제 버튼 스타일 */
+.delete-btn {
+    background-color: #dc3545; /* 빨간색 배경 */
+    color: white; /* 흰색 글자 */
+}
+
+/* 삭제 버튼 호버 효과 */
+.delete-btn:hover {
+    background-color: #c82333; /* 더 진한 빨간색 */
+}
+
+/* 오류 메시지 스타일 */
+.error {
+    color: #dc3545; /* 빨간색 텍스트 */
+    background-color: #f8d7da; /* 연한 빨간색 배경 */
+    padding: 10px; /* 내부 여백 */
+    border-radius: 4px; /* 둥근 모서리 */
+    margin: 10px 0; /* 상하 여백 */
+}
+
+/* 로딩 메시지 스타일 */
+.loading {
+    text-align: center; /* 중앙 정렬 */
+    color: #6c757d; /* 회색 텍스트 */
+    font-style: italic; /* 이탤릭체 */
+}
+
+/* 우선순위별 스타일 */
+.todo-item.priority-1 {
+    border-left-color: #dc3545; /* 빨간색 - 높은 우선순위 */
+}
+
+.todo-item.priority-2 {
+    border-left-color: #ffc107; /* 노란색 - 보통 우선순위 */
+}
+
+.todo-item.priority-3 {
+    border-left-color: #28a745; /* 초록색 - 낮은 우선순위 */
+}
+
+/* 우선순위 배지 스타일 */
+.priority-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.priority-badge.high {
+    background-color: #dc3545;
+    color: white;
+}
+
+.priority-badge.medium {
+    background-color: #ffc107;
+    color: black;
+}
+
+.priority-badge.low {
+    background-color: #28a745;
+    color: white;
+}
+
+/* 생성일자 스타일 */
+.created-date {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 5px;
+}
