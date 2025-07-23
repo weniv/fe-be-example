@@ -44,6 +44,7 @@ jobs:
           # 환경변수 파일(.env) 생성 (GitHub Secrets의 값들 사용)
           # 기존 .env 파일이 있다면 삭제하고 새로 생성
           rm -f .env
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
           echo "DB_USER=${{ secrets.DB_USER }}" >> .env
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
