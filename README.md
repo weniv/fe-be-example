@@ -1,46 +1,58 @@
-# FastAPI 부트캠프 프로젝트 - Step 1: 프로젝트 설정
+# FastAPI 부트캠프 프로젝트 - Step 2: FastAPI 기본 설정
 
-이 단계에서는 프로젝트의 기본 구조를 설정합니다.
+이 단계에서는 FastAPI 기본 애플리케이션을 작성합니다.
 
 ## 학습 목표
-- 프로젝트 디렉토리 구조 이해
-- Python 가상환경 설정
-- 기본 requirements.txt 작성
+- FastAPI 애플리케이션 생성
+- 기본 라우트 작성
+- CORS 미들웨어 설정
+- API 문서 자동 생성 확인
 
 ## 프로젝트 구조
 ```
 fastapi-bootcamp/
 ├── backend/
+│   ├── app/
+│   │   ├── __init__.py
+│   │   └── main.py
 │   └── requirements.txt
 ├── frontend/
 └── README.md
 ```
 
-## 설정 방법
+## 새로 추가된 내용
 
-### 1. 프로젝트 디렉토리 생성
-```bash
-mkdir backend
-mkdir frontend
-```
+### backend/app/main.py
+- FastAPI 애플리케이션 초기화
+- CORS 미들웨어 설정 (프론트엔드 통신 허용)
+- 기본 라우트 (/) 구현
+- 헬스체크 엔드포인트 (/health) 구현
 
-### 2. Python 가상환경 설정
-```bash
-python -m venv venv
-# Windows
-venv\Scripts\activate
-# Mac/Linux
-source venv/bin/activate
-```
+## 실행 방법
 
-### 3. 의존성 설치
+### 1. 의존성 설치
 ```bash
 cd backend
 pip install -r requirements.txt
 ```
 
+### 2. FastAPI 서버 실행
+```bash
+# 개발 모드로 실행 (자동 리로드)
+uvicorn app.main:app --reload
+```
+
+### 3. API 확인
+- 브라우저에서 http://localhost:8000 접속
+- API 문서: http://localhost:8000/docs
+- ReDoc 문서: http://localhost:8000/redoc
+
+## API 엔드포인트
+- `GET /`: 환영 메시지
+- `GET /health`: 서버 상태 확인
+
 ## 다음 단계
-Step 2에서는 FastAPI 기본 애플리케이션을 작성합니다.
+Step 3에서는 데이터베이스 모델을 추가합니다.
 
 ## 🚀 빠른 시작
 
