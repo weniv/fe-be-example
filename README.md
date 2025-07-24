@@ -1,12 +1,12 @@
-# FastAPI 부트캠프 프로젝트 - Step 5: 프론트엔드 기본 구조
+# FastAPI 부트캠프 프로젝트 - Step 6: API 연동
 
-이 단계에서는 HTML, CSS, JavaScript를 사용하여 프론트엔드 기본 구조를 생성합니다.
+이 단계에서는 프론트엔드와 백엔드 API를 연동합니다.
 
 ## 학습 목표
-- HTML 구조 작성
-- CSS 스타일링
-- JavaScript 기본 기능 구현
-- 더미 데이터로 UI 테스트
+- Fetch API 사용법
+- async/await 비동기 처리
+- CORS 이해
+- 에러 처리
 
 ## 프로젝트 구조
 ```
@@ -26,51 +26,66 @@ fastapi-bootcamp/
 └── README.md
 ```
 
-## 새로 추가된 내용
-
-### frontend/todo.html
-- 할일 관리 앱의 메인 페이지
-- 할일 추가 폼
-- 할일 목록 표시 영역
-
-### frontend/simple-style.css
-- 반응형 디자인
-- 모던한 UI 스타일
-- 할일 상태별 스타일 구분
+## 수정된 내용
 
 ### frontend/simple-script.js
-- 더미 데이터로 할일 목록 표시
-- 할일 추가/수정/삭제 UI 동작
-- Enter 키로 할일 추가 기능
+- **API 연동 추가**:
+  - `loadTodos()`: 서버에서 할일 목록 불러오기
+  - `addTodo()`: 서버에 새 할일 추가
+  - `toggleTodo()`: 서버에서 할일 상태 변경
+  - `deleteTodo()`: 서버에서 할일 삭제
+
+- **헬퍼 함수 추가**:
+  - `showLoading()`: 로딩 상태 표시
+  - `showError()`: 에러 메시지 표시
 
 ## 실행 방법
 
-### 1. 프론트엔드 서버 실행
+### 1. 백엔드 서버 실행
+```bash
+cd backend
+uvicorn app.main:app --reload
+```
+
+### 2. 프론트엔드 서버 실행
+별도의 터미널에서:
 ```bash
 cd frontend
-# Python HTTP 서버 실행
 python -m http.server 3000
 ```
 
-### 2. 브라우저에서 확인
-http://localhost:3000/todo.html 접속
+### 3. 애플리케이션 사용
+- 브라우저에서 http://localhost:3000/todo.html 접속
+- 할일을 추가, 수정, 삭제해보세요
+- 데이터는 SQLite 데이터베이스에 저장됩니다
+
+## API 통신 흐름
+
+1. **페이지 로드**: `loadTodos()` → GET /todos/
+2. **할일 추가**: `addTodo()` → POST /todos/
+3. **상태 변경**: `toggleTodo()` → PUT /todos/{id}
+4. **할일 삭제**: `deleteTodo()` → DELETE /todos/{id}
 
 ## 주요 기능
 
-### 현재 구현된 기능 (UI만)
-- 할일 목록 표시 (더미 데이터)
-- 할일 추가 폼
-- 완료 상태 토글 버튼
-- 삭제 버튼
-- Enter 키로 빠른 추가
+### 구현된 기능
+- ✅ 실시간 API 통신
+- ✅ 데이터 영구 저장 (SQLite)
+- ✅ 로딩 상태 표시
+- ✅ 에러 처리
+- ✅ CORS 지원
 
-### 아직 구현되지 않은 기능
-- 실제 API 연동
-- 데이터 영구 저장
-- 실시간 업데이트
+## 문제 해결
+
+### CORS 에러가 발생하는 경우
+백엔드의 CORS 설정을 확인하세요. main.py에 이미 설정되어 있습니다.
+
+### API 연결이 안 되는 경우
+1. 백엔드 서버가 실행 중인지 확인 (포트 8000)
+2. 프론트엔드의 API_BASE_URL이 올바른지 확인
 
 ## 다음 단계
-Step 6에서는 프론트엔드와 백엔드 API를 연동합니다.
+Step 7에서는 Docker를 사용하여 애플리케이션을 컨테이너화합니다.
 
 ## 🚀 빠른 시작
 
