@@ -1,12 +1,12 @@
-# FastAPI 부트캠프 프로젝트 - Step 2: FastAPI 기본 설정
+# FastAPI 부트캠프 프로젝트 - Step 3: 데이터베이스 모델
 
-이 단계에서는 FastAPI 기본 애플리케이션을 작성합니다.
+이 단계에서는 SQLAlchemy를 사용하여 데이터베이스 모델을 추가합니다.
 
 ## 학습 목표
-- FastAPI 애플리케이션 생성
-- 기본 라우트 작성
-- CORS 미들웨어 설정
-- API 문서 자동 생성 확인
+- SQLAlchemy 설정
+- 데이터베이스 모델 생성
+- 데이터베이스 연결 설정
+- 테이블 자동 생성
 
 ## 프로젝트 구조
 ```
@@ -14,7 +14,9 @@ fastapi-bootcamp/
 ├── backend/
 │   ├── app/
 │   │   ├── __init__.py
-│   │   └── main.py
+│   │   ├── main.py
+│   │   ├── database.py
+│   │   └── models.py
 │   └── requirements.txt
 ├── frontend/
 └── README.md
@@ -22,11 +24,22 @@ fastapi-bootcamp/
 
 ## 새로 추가된 내용
 
-### backend/app/main.py
-- FastAPI 애플리케이션 초기화
-- CORS 미들웨어 설정 (프론트엔드 통신 허용)
-- 기본 라우트 (/) 구현
-- 헬스체크 엔드포인트 (/health) 구현
+### backend/app/database.py
+- SQLite 데이터베이스 엔진 설정
+- SessionLocal 생성 (데이터베이스 세션)
+- Base 클래스 정의 (모든 모델의 부모 클래스)
+- get_db 함수: 의존성 주입을 위한 데이터베이스 세션 생성
+
+### backend/app/models.py
+- Todo 모델 정의
+  - id: 고유 식별자 (Primary Key)
+  - title: 할일 제목
+  - description: 할일 설명
+  - completed: 완료 여부 (기본값: False)
+
+### backend/app/main.py 수정
+- 데이터베이스 테이블 자동 생성 추가
+- 서버 시작 시 todos 테이블이 자동으로 생성됨
 
 ## 실행 방법
 
@@ -38,21 +51,14 @@ pip install -r requirements.txt
 
 ### 2. FastAPI 서버 실행
 ```bash
-# 개발 모드로 실행 (자동 리로드)
 uvicorn app.main:app --reload
 ```
 
-### 3. API 확인
-- 브라우저에서 http://localhost:8000 접속
-- API 문서: http://localhost:8000/docs
-- ReDoc 문서: http://localhost:8000/redoc
-
-## API 엔드포인트
-- `GET /`: 환영 메시지
-- `GET /health`: 서버 상태 확인
+### 3. 데이터베이스 확인
+서버 실행 후 backend 디렉토리에 `todos.db` 파일이 생성됩니다.
 
 ## 다음 단계
-Step 3에서는 데이터베이스 모델을 추가합니다.
+Step 4에서는 할일 CRUD API를 구현합니다.
 
 ## 🚀 빠른 시작
 
