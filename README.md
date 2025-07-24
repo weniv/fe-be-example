@@ -1,16 +1,21 @@
-# FastAPI 부트캠프 프로젝트 - Step 7: 배포 준비
+# FastAPI 부트캠프 프로젝트 - Step 8: GitHub Actions CI/CD
 
-이 단계에서는 애플리케이션을 배포할 준비를 합니다.
+이 단계에서는 GitHub Actions를 사용하여 CI/CD 파이프라인을 설정합니다.
 
 ## 학습 목표
-- 환경변수 설정
-- 프로덕션 실행 스크립트
-- 보안 설정
-- 배포 체크리스트
+- GitHub Actions 워크플로우 이해
+- 자동화된 테스트 설정
+- 배포 자동화
+- CI/CD 개념 이해
 
 ## 프로젝트 구조
 ```
 fastapi-bootcamp/
+├── .github/
+│   └── workflows/
+│       ├── test.yml
+│       ├── deploy.yml
+│       └── simple-deploy.yml
 ├── backend/
 │   ├── app/
 │   │   ├── __init__.py
@@ -32,81 +37,120 @@ fastapi-bootcamp/
 
 ## 새로 추가된 내용
 
-### 환경설정 파일
-- **simple.env.example**: 환경변수 템플릿
-- **.gitignore**: Git에서 제외할 파일 목록
+### GitHub Actions 워크플로우
+- **.github/workflows/test.yml**: 자동 테스트 실행
+- **.github/workflows/simple-deploy.yml**: 간단한 배포 워크플로우
+- **.github/workflows/deploy.yml**: 기존 고급 배포 워크플로우
 
-### 실행 스크립트
-- **run_dev.sh/bat**: 개발 환경 실행 (백엔드 + 프론트엔드)
-- **run_production.sh**: 프로덕션 환경 실행
+## CI/CD 파이프라인
 
-### requirements.txt 업데이트
-- python-multipart: 파일 업로드 지원
-- python-dotenv: 환경변수 관리
-
-## 배포 준비 체크리스트
-
-### 1. 환경변수 설정
-```bash
-cp simple.env.example .env
-# .env 파일을 열어서 실제 값으로 수정
+### 1. 테스트 자동화 (test.yml)
+```yaml
+# Push나 PR 시 자동 실행
+- Python 3.11 환경 설정
+- 의존성 설치
+- FastAPI 앱 로드 테스트
+- 데이터베이스 테이블 생성 테스트
 ```
 
-### 2. 데이터베이스 준비
-- 개발: SQLite (자동 생성)
-- 프로덕션: PostgreSQL 권장
-
-### 3. 보안 확인
-- [ ] .env 파일이 .gitignore에 포함되어 있는지 확인
-- [ ] CORS 설정 확인 (프로덕션에서는 특정 도메인만 허용)
-- [ ] 민감한 정보가 코드에 하드코딩되어 있지 않은지 확인
-
-### 4. 실행 방법
-
-#### 개발 환경 (Windows)
-```bash
-run_dev.bat
+### 2. 배포 자동화 (simple-deploy.yml)
+```yaml
+# main/master 브랜치 push 시 실행
+- 배포 정보 출력
+- 실제 배포 로직은 주석으로 예시 제공
 ```
 
-#### 개발 환경 (Mac/Linux)
-```bash
-chmod +x run_dev.sh
-./run_dev.sh
+## GitHub Actions 사용법
+
+### 1. 워크플로우 확인
+- GitHub 저장소 → Actions 탭에서 실행 상태 확인
+- 각 단계별 로그 확인 가능
+
+### 2. Secrets 설정 (실제 배포 시)
+Settings → Secrets and variables → Actions에서 설정:
+```
+EC2_SSH_KEY: SSH 키 파일 내용
+EC2_HOST: 서버 IP 주소
+EC2_USER: 서버 로그인 사용자명
+SECRET_KEY: 애플리케이션 시크릿 키
+DATABASE_URL: 데이터베이스 연결 URL
 ```
 
-#### 프로덕션 환경
+### 3. 브랜치 전략
+- **feature 브랜치**: 새 기능 개발
+- **develop 브랜치**: 개발 통합
+- **main/master 브랜치**: 프로덕션 배포
+
+## CI/CD 흐름
+
+1. **개발자가 코드 푸시**
+2. **자동 테스트 실행** (test.yml)
+   - 코드 품질 검증
+   - 기본 기능 테스트
+   - 오류 시 배포 중단
+3. **테스트 통과 시 배포** (deploy.yml)
+   - 서버에 자동 배포
+   - 서비스 재시작
+   - 배포 완료 알림
+
+## 장점
+
+### CI (Continuous Integration)
+- 코드 변경 시 자동 테스트
+- 빠른 오류 발견
+- 코드 품질 향상
+
+### CD (Continuous Deployment)
+- 자동화된 배포
+- 배포 시간 단축
+- 인간 실수 방지
+
+## 실제 사용 시나리오
+
+### 1. 새 기능 추가
 ```bash
-chmod +x run_production.sh
-./run_production.sh
+git checkout -b feature/new-todo-priority
+# 코드 작성
+git push origin feature/new-todo-priority
+# Pull Request 생성 → 자동 테스트 실행
 ```
 
-## 배포 옵션
+### 2. 프로덕션 배포
+```bash
+git checkout main
+git merge feature/new-todo-priority
+git push origin main
+# 자동 테스트 → 배포 실행
+```
 
-### 1. 로컬 서버
-- 현재 설정으로 바로 실행 가능
-- 포트 포워딩 필요
+## 확장 가능한 기능
 
-### 2. 클라우드 서비스
-- AWS EC2
-- Heroku
-- Railway
-- Render
+1. **고급 테스트**
+   - 단위 테스트 (pytest)
+   - 통합 테스트
+   - 코드 커버리지
 
-### 3. VPS
-- DigitalOcean
-- Linode
-- Vultr
+2. **배포 전략**
+   - Blue-Green 배포
+   - 카나리 배포
+   - 롤백 기능
 
-## 프로덕션 고려사항
+3. **모니터링**
+   - 슬랙 알림
+   - 이메일 알림
+   - 성능 모니터링
 
-1. **데이터베이스**: SQLite → PostgreSQL/MySQL
-2. **웹서버**: Nginx 리버스 프록시 추천
-3. **프로세스 관리**: systemd 또는 supervisor
-4. **HTTPS**: Let's Encrypt 인증서
-5. **모니터링**: 로그 수집 및 모니터링 도구
+## 완성된 부트캠프 프로젝트! 🎉
 
-## 다음 단계
-Step 8에서는 GitHub Actions를 사용한 CI/CD를 설정합니다.
+이제 전체 개발 과정을 경험했습니다:
+1. ✅ 프로젝트 초기 설정
+2. ✅ FastAPI 백엔드 개발
+3. ✅ 데이터베이스 모델링
+4. ✅ REST API 구현
+5. ✅ 프론트엔드 개발
+6. ✅ API 연동
+7. ✅ 배포 준비
+8. ✅ CI/CD 자동화
 
 ## 🚀 빠른 시작
 

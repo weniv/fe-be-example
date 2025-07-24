@@ -1,0 +1,27 @@
+name: Simple Deploy
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Deploy info
+      run: |
+        echo "🚀 Ready to deploy!"
+        echo "Branch: ${{ github.ref }}"
+        echo "Commit: ${{ github.sha }}"
+        echo "This is a placeholder for actual deployment"
+        
+    # 실제 배포 단계는 여기에 추가
+    # 예시:
+    # - SSH를 통한 서버 배포
+    # - Docker 이미지 빌드 및 배포
+    # - 클라우드 서비스 배포
