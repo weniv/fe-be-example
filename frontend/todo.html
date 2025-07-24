@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>할일 관리 앱</title>
+    <link rel="stylesheet" href="simple-style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>할일 관리 앱</h1>
+        
+        <div class="todo-form">
+            <h2>새 할일 추가</h2>
+            <input type="text" id="todoTitle" placeholder="할일 제목" required>
+            <input type="text" id="todoDescription" placeholder="할일 설명 (선택사항)">
+            <button onclick="addTodo()">추가</button>
+        </div>
+
+        <div class="todo-list">
+            <h2>할일 목록</h2>
+            <div id="todos"></div>
+        </div>
+    </div>
+
+    <script src="simple-script.js"></script>
+</body>
+</html>

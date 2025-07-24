@@ -1,12 +1,12 @@
-# FastAPI 부트캠프 프로젝트 - Step 4: CRUD API 구현
+# FastAPI 부트캠프 프로젝트 - Step 5: 프론트엔드 기본 구조
 
-이 단계에서는 할일 관리를 위한 CRUD (Create, Read, Update, Delete) API를 구현합니다.
+이 단계에서는 HTML, CSS, JavaScript를 사용하여 프론트엔드 기본 구조를 생성합니다.
 
 ## 학습 목표
-- Pydantic 스키마 작성
-- CRUD 함수 구현
-- RESTful API 엔드포인트 작성
-- 의존성 주입 활용
+- HTML 구조 작성
+- CSS 스타일링
+- JavaScript 기본 기능 구현
+- 더미 데이터로 UI 테스트
 
 ## 프로젝트 구조
 ```
@@ -20,76 +20,57 @@ fastapi-bootcamp/
 │   │   └── crud.py
 │   └── requirements.txt
 ├── frontend/
+│   ├── todo.html
+│   ├── simple-style.css
+│   └── simple-script.js
 └── README.md
 ```
 
 ## 새로 추가된 내용
 
-### backend/app/crud.py
-- **Pydantic 스키마**:
-  - `TodoCreate`: 할일 생성 시 필요한 데이터
-  - `TodoUpdate`: 할일 수정 시 필요한 데이터 (모든 필드 선택적)
-  - `TodoResponse`: API 응답 형식
+### frontend/todo.html
+- 할일 관리 앱의 메인 페이지
+- 할일 추가 폼
+- 할일 목록 표시 영역
 
-- **CRUD 함수**:
-  - `get_todos()`: 모든 할일 조회
-  - `get_todo()`: 특정 할일 조회
-  - `create_todo()`: 새 할일 생성
-  - `update_todo()`: 할일 수정
-  - `delete_todo()`: 할일 삭제
+### frontend/simple-style.css
+- 반응형 디자인
+- 모던한 UI 스타일
+- 할일 상태별 스타일 구분
 
-### backend/app/main.py 수정
-- **API 엔드포인트 추가**:
-  - `POST /todos/`: 새 할일 생성
-  - `GET /todos/`: 모든 할일 조회
-  - `GET /todos/{todo_id}`: 특정 할일 조회
-  - `PUT /todos/{todo_id}`: 할일 수정
-  - `DELETE /todos/{todo_id}`: 할일 삭제
+### frontend/simple-script.js
+- 더미 데이터로 할일 목록 표시
+- 할일 추가/수정/삭제 UI 동작
+- Enter 키로 할일 추가 기능
 
-## API 테스트 방법
+## 실행 방법
 
-### 1. 서버 실행
+### 1. 프론트엔드 서버 실행
 ```bash
-cd backend
-uvicorn app.main:app --reload
+cd frontend
+# Python HTTP 서버 실행
+python -m http.server 3000
 ```
 
-### 2. API 문서에서 테스트
-http://localhost:8000/docs 접속하여 Swagger UI에서 각 API 테스트
+### 2. 브라우저에서 확인
+http://localhost:3000/todo.html 접속
 
-### 3. curl 명령어로 테스트
+## 주요 기능
 
-#### 할일 생성
-```bash
-curl -X POST "http://localhost:8000/todos/" \
-     -H "Content-Type: application/json" \
-     -d '{"title": "FastAPI 공부하기", "description": "Step 4 완료하기"}'
-```
+### 현재 구현된 기능 (UI만)
+- 할일 목록 표시 (더미 데이터)
+- 할일 추가 폼
+- 완료 상태 토글 버튼
+- 삭제 버튼
+- Enter 키로 빠른 추가
 
-#### 모든 할일 조회
-```bash
-curl "http://localhost:8000/todos/"
-```
-
-#### 특정 할일 조회
-```bash
-curl "http://localhost:8000/todos/1"
-```
-
-#### 할일 수정
-```bash
-curl -X PUT "http://localhost:8000/todos/1" \
-     -H "Content-Type: application/json" \
-     -d '{"completed": true}'
-```
-
-#### 할일 삭제
-```bash
-curl -X DELETE "http://localhost:8000/todos/1"
-```
+### 아직 구현되지 않은 기능
+- 실제 API 연동
+- 데이터 영구 저장
+- 실시간 업데이트
 
 ## 다음 단계
-Step 5에서는 프론트엔드 기본 구조를 생성합니다.
+Step 6에서는 프론트엔드와 백엔드 API를 연동합니다.
 
 ## 🚀 빠른 시작
 
