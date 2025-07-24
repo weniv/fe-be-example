@@ -3,9 +3,9 @@
 이 단계에서는 HTML, CSS, JavaScript를 사용하여 프론트엔드 기본 구조를 생성합니다.
 
 ## 학습 목표
-- HTML 구조 작성
-- CSS 스타일링
-- JavaScript 기본 기능 구현
+- HTML 구조 작성 및 시맨틱 마크업
+- CSS 스타일링 및 반응형 디자인
+- JavaScript DOM 조작 및 이벤트 처리
 - 더미 데이터로 UI 테스트
 
 ## 프로젝트 구조
@@ -20,57 +20,83 @@ fastapi-bootcamp/
 │   │   └── crud.py
 │   └── requirements.txt
 ├── frontend/
-│   ├── todo.html
-│   ├── simple-style.css
-│   └── simple-script.js
+│   ├── index.html
+│   ├── style.css
+│   └── script.js
 └── README.md
 ```
 
 ## 새로 추가된 내용
 
-### frontend/todo.html
+### frontend/index.html
 - 할일 관리 앱의 메인 페이지
-- 할일 추가 폼
-- 할일 목록 표시 영역
+- 시맨틱한 HTML 구조 (header, main, section 등)
+- 할일 추가 폼과 목록 표시 영역
+- 접근성을 고려한 마크업
 
-### frontend/simple-style.css
-- 반응형 디자인
-- 모던한 UI 스타일
-- 할일 상태별 스타일 구분
+### frontend/style.css
+- 전체 페이지 스타일 초기화
+- 반응형 레이아웃 (모바일/태블릿/데스크톱 대응)
+- 할일 상태별 시각적 구분 (완료/미완료)
+- 버튼 호버 효과 및 사용자 피드백
 
-### frontend/simple-script.js
+### frontend/script.js
 - 더미 데이터로 할일 목록 표시
-- 할일 추가/수정/삭제 UI 동작
-- Enter 키로 할일 추가 기능
+- DOM 조작을 통한 동적 콘텐츠 생성
+- 이벤트 리스너를 통한 사용자 상호작용
+- Enter키 지원으로 향상된 사용자 경험
 
 ## 실행 방법
 
 ### 1. 프론트엔드 서버 실행
 ```bash
 cd frontend
+
 # Python HTTP 서버 실행
 python -m http.server 3000
+
+# 또는 Node.js가 설치된 경우
+npx http-server -p 3000
 ```
 
 ### 2. 브라우저에서 확인
-http://localhost:3000/todo.html 접속
+http://localhost:3000/index.html 접속
 
 ## 주요 기능
 
 ### 현재 구현된 기능 (UI만)
-- 할일 목록 표시 (더미 데이터)
-- 할일 추가 폼
-- 완료 상태 토글 버튼
-- 삭제 버튼
-- Enter 키로 빠른 추가
+- ✅ 할일 목록 표시 (더미 데이터 2개)
+- ✅ 할일 추가 폼 (제목, 설명 입력)
+- ✅ 완료/미완료 상태 토글 버튼
+- ✅ 삭제 확인 및 삭제 버튼
+- ✅ Enter 키로 빠른 할일 추가
+- ✅ 반응형 디자인
 
 ### 아직 구현되지 않은 기능
-- 실제 API 연동
-- 데이터 영구 저장
-- 실시간 업데이트
+- ❌ 실제 API 연동 (Step 6에서 구현)
+- ❌ 데이터 영구 저장
+- ❌ 실시간 데이터 업데이트
+
+## 코드 구조 설명
+
+### HTML 구조
+- `container`: 전체 레이아웃을 감싸는 컨테이너
+- `todo-form`: 새 할일을 추가하는 폼
+- `todo-list`: 할일 목록을 표시하는 영역
+
+### CSS 클래스
+- `.todo-item`: 개별 할일 아이템 스타일
+- `.completed`: 완료된 할일의 특별한 스타일
+- `.todo-actions`: 버튼들을 배치하는 컨테이너
+
+### JavaScript 함수
+- `displayTodos()`: 더미 데이터를 화면에 렌더링
+- `addTodo()`: 새 할일 추가 (현재는 알림만)
+- `toggleTodo()`: 완료 상태 토글 (현재는 알림만)
+- `deleteTodo()`: 할일 삭제 (현재는 알림만)
 
 ## 다음 단계
-Step 6에서는 프론트엔드와 백엔드 API를 연동합니다.
+Step 6에서는 프론트엔드와 백엔드 API를 연동하여 실제 데이터 저장/조회가 가능하도록 구현합니다.
 
 ## 🚀 빠른 시작
 

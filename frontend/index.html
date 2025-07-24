@@ -3,109 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>할일 관리 앱 - 홈</title>
-    <!-- 외부 CSS 파일 연결 -->
+    <title>할일 관리 앱</title>
+    <!-- CSS 파일 연결 -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- 홈페이지 컨테이너 -->
-    <div class="home-container">
-        <!-- 메인 콘텐츠 섹션 -->
-        <div class="home-content">
-            <!-- 앱 소개 헤더 -->
-            <header class="home-header">
-                <h1>📝 할일 관리 앱</h1>
-                <p class="home-subtitle">
-                    효율적인 일정 관리로 생산성을 높이세요!<br>
-                    간단하고 직관적인 인터페이스로 할일을 체계적으로 관리할 수 있습니다.
-                </p>
-            </header>
-
-            <!-- 주요 기능 소개 -->
-            <section class="features">
-                <h2>주요 기능</h2>
-                <div class="features-grid">
-                    <!-- 우선순위 관리 -->
-                    <div class="feature-card">
-                        <div class="feature-icon">🔴</div>
-                        <h3>우선순위 관리</h3>
-                        <p>중요도에 따라 할일을 분류하고<br>효율적으로 업무를 처리하세요</p>
-                    </div>
-                    
-                    <!-- 실시간 검색 -->
-                    <div class="feature-card">
-                        <div class="feature-icon">🔍</div>
-                        <h3>실시간 검색</h3>
-                        <p>키워드로 할일을 빠르게 찾고<br>필요한 정보에 즉시 접근하세요</p>
-                    </div>
-                    
-                    <!-- 한국시간 지원 -->
-                    <div class="feature-card">
-                        <div class="feature-icon">🕐</div>
-                        <h3>한국시간 지원</h3>
-                        <p>KST 기준으로 정확한 시간을<br>표시하여 일정을 관리하세요</p>
-                    </div>
-                    
-                    <!-- 개인 데이터 보호 -->
-                    <div class="feature-card">
-                        <div class="feature-icon">🔒</div>
-                        <h3>개인 데이터 보호</h3>
-                        <p>JWT 토큰 기반 인증으로<br>안전하게 개인 정보를 보호합니다</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 시작하기 버튼들 -->
-            <section class="cta-section">
-                <div class="cta-buttons">
-                    <!-- 기존 사용자용 로그인 버튼 -->
-                    <a href="login.html" class="btn-primary">
-                        🚀 로그인하기
-                    </a>
-                    
-                    <!-- 신규 사용자용 회원가입 버튼 -->
-                    <a href="signup.html" class="btn-secondary">
-                        ✨ 회원가입하기
-                    </a>
-                </div>
-                
-                <!-- 추가 안내 메시지 -->
-                <p class="cta-note">
-                    이미 계정이 있으신가요? 
-                    <a href="login.html" class="link-text">로그인</a>해서 바로 시작하세요!
-                </p>
-            </section>
-
-            <!-- 기술 스택 정보 -->
-            <section class="tech-info">
-                <h3>기술 스택</h3>
-                <div class="tech-badges">
-                    <span class="tech-badge">FastAPI</span>
-                    <span class="tech-badge">SQLAlchemy</span>
-                    <span class="tech-badge">JWT Auth</span>
-                    <span class="tech-badge">JavaScript ES6+</span>
-                    <span class="tech-badge">HTML5/CSS3</span>
-                    <span class="tech-badge">PostgreSQL</span>
-                </div>
-            </section>
+    <!-- 전체 컨테이너 -->
+    <div class="container">
+        <!-- 페이지 제목 -->
+        <h1>할일 관리 앱</h1>
+        
+        <!-- 할일 추가 폼 -->
+        <div class="todo-form">
+            <h2>새 할일 추가</h2>
+            <!-- 할일 제목 입력 -->
+            <input type="text" id="todoTitle" placeholder="할일 제목" required>
+            <!-- 할일 설명 입력 (선택사항) -->
+            <input type="text" id="todoDescription" placeholder="할일 설명 (선택사항)">
+            <!-- 추가 버튼 -->
+            <button onclick="addTodo()">추가</button>
         </div>
 
-        <!-- 푸터 -->
-        <footer class="home-footer">
-            <p>&copy; 2025 할일 관리 앱. FastAPI 부트캠프 프로젝트</p>
-        </footer>
+        <!-- 할일 목록 표시 영역 -->
+        <div class="todo-list">
+            <h2>할일 목록</h2>
+            <!-- 할일들이 여기에 동적으로 추가됩니다 -->
+            <div id="todos"></div>
+        </div>
     </div>
 
     <!-- JavaScript 파일 연결 -->
-    <script src="auth.js"></script>
-    <script>
-        // 페이지 로드 시 로그인 상태 확인
-        document.addEventListener('DOMContentLoaded', function() {
-            // 이미 로그인한 사용자는 메인 애플리케이션으로 리다이렉트
-            if (isLoggedIn()) {
-                window.location.href = 'main.html';
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
