@@ -1,12 +1,12 @@
-# FastAPI 부트캠프 프로젝트 - Step 3: 데이터베이스 모델
+# FastAPI 부트캠프 프로젝트 - Step 4: CRUD API 구현
 
-이 단계에서는 SQLAlchemy를 사용하여 데이터베이스 모델을 추가합니다.
+이 단계에서는 할일 관리를 위한 CRUD (Create, Read, Update, Delete) API를 구현합니다.
 
 ## 학습 목표
-- SQLAlchemy 설정
-- 데이터베이스 모델 생성
-- 데이터베이스 연결 설정
-- 테이블 자동 생성
+- Pydantic 스키마 작성
+- CRUD 함수 구현
+- RESTful API 엔드포인트 작성
+- 의존성 주입 활용
 
 ## 프로젝트 구조
 ```
@@ -16,7 +16,8 @@ fastapi-bootcamp/
 │   │   ├── __init__.py
 │   │   ├── main.py
 │   │   ├── database.py
-│   │   └── models.py
+│   │   ├── models.py
+│   │   └── crud.py
 │   └── requirements.txt
 ├── frontend/
 └── README.md
@@ -24,41 +25,71 @@ fastapi-bootcamp/
 
 ## 새로 추가된 내용
 
-### backend/app/database.py
-- SQLite 데이터베이스 엔진 설정
-- SessionLocal 생성 (데이터베이스 세션)
-- Base 클래스 정의 (모든 모델의 부모 클래스)
-- get_db 함수: 의존성 주입을 위한 데이터베이스 세션 생성
+### backend/app/crud.py
+- **Pydantic 스키마**:
+  - `TodoCreate`: 할일 생성 시 필요한 데이터
+  - `TodoUpdate`: 할일 수정 시 필요한 데이터 (모든 필드 선택적)
+  - `TodoResponse`: API 응답 형식
 
-### backend/app/models.py
-- Todo 모델 정의
-  - id: 고유 식별자 (Primary Key)
-  - title: 할일 제목
-  - description: 할일 설명
-  - completed: 완료 여부 (기본값: False)
+- **CRUD 함수**:
+  - `get_todos()`: 모든 할일 조회
+  - `get_todo()`: 특정 할일 조회
+  - `create_todo()`: 새 할일 생성
+  - `update_todo()`: 할일 수정
+  - `delete_todo()`: 할일 삭제
 
 ### backend/app/main.py 수정
-- 데이터베이스 테이블 자동 생성 추가
-- 서버 시작 시 todos 테이블이 자동으로 생성됨
+- **API 엔드포인트 추가**:
+  - `POST /todos/`: 새 할일 생성
+  - `GET /todos/`: 모든 할일 조회
+  - `GET /todos/{todo_id}`: 특정 할일 조회
+  - `PUT /todos/{todo_id}`: 할일 수정
+  - `DELETE /todos/{todo_id}`: 할일 삭제
 
-## 실행 방법
+## API 테스트 방법
 
-### 1. 의존성 설치
+### 1. 서버 실행
 ```bash
 cd backend
-pip install -r requirements.txt
-```
-
-### 2. FastAPI 서버 실행
-```bash
 uvicorn app.main:app --reload
 ```
 
-### 3. 데이터베이스 확인
-서버 실행 후 backend 디렉토리에 `todos.db` 파일이 생성됩니다.
+### 2. API 문서에서 테스트
+http://localhost:8000/docs 접속하여 Swagger UI에서 각 API 테스트
+
+### 3. curl 명령어로 테스트
+
+#### 할일 생성
+```bash
+curl -X POST "http://localhost:8000/todos/" \
+     -H "Content-Type: application/json" \
+     -d '{"title": "FastAPI 공부하기", "description": "Step 4 완료하기"}'
+```
+
+#### 모든 할일 조회
+```bash
+curl "http://localhost:8000/todos/"
+```
+
+#### 특정 할일 조회
+```bash
+curl "http://localhost:8000/todos/1"
+```
+
+#### 할일 수정
+```bash
+curl -X PUT "http://localhost:8000/todos/1" \
+     -H "Content-Type: application/json" \
+     -d '{"completed": true}'
+```
+
+#### 할일 삭제
+```bash
+curl -X DELETE "http://localhost:8000/todos/1"
+```
 
 ## 다음 단계
-Step 4에서는 할일 CRUD API를 구현합니다.
+Step 5에서는 프론트엔드 기본 구조를 생성합니다.
 
 ## 🚀 빠른 시작
 
