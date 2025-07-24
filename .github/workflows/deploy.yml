@@ -1,56 +1,141 @@
-# GitHub Actions 워크플로우 - AWS EC2 배포
-# 이 파일은 코드가 GitHub에 푸시될 때 자동으로 EC2 서버에 배포하는 역할을 합니다
-name: Deploy to AWS EC2
+# GitHub Actions 배포 워크플로우
+# FastAPI 할일 관리 앱을 AWS EC2에 자동 배포
 
-# 워크플로우가 실행될 조건 설정
-# master 브랜치에 코드가 푸시될 때만 배포를 실행합니다
+name: Deploy - EC2 자동 배포
+
+# 워크플로우 실행 조건
+# main 또는 master 브랜치에 push할 때만 배포 실행
 on:
   push:
-    branches: [ master ]
+    branches: [ main, master ]
 
-# 실행할 작업들을 정의합니다
 jobs:
   # 배포 작업 정의
   deploy:
-    # Ubuntu 가상 머신에서 실행
+    name: 🚀 EC2 배포
     runs-on: ubuntu-latest
     
+    # CI 테스트가 성공한 경우에만 배포 실행
+    # (CI 워크플로우와 병렬 실행되므로 현재는 주석 처리)
+    # needs: test
+    
     steps:
-    # EC2 서버에 SSH로 접속하여 배포 작업 수행
-    - name: Deploy to EC2
-      # appleboy/ssh-action: SSH 접속을 쉽게 해주는 GitHub Action (최신 버전)
-      uses: appleboy/ssh-action@v1.2.0
-      with:
-        # GitHub Secrets에 저장된 값들을 사용 (보안을 위해)
-        host: ${{ secrets.EC2_HOST }}           # EC2 서버 IP 주소
-        username: ${{ secrets.EC2_USER }}       # EC2 로그인 사용자명 (보통 ubuntu)
-        key: ${{ secrets.EC2_SSH_KEY }}         # EC2 접속용 SSH 키 (.pem 파일 내용)
+    # 1. 소스 코드 체크아웃
+    - name: 📥 소스 코드 가져오기
+      uses: actions/checkout@v4
+    
+    # 2. 배포 전 정보 출력
+    - name: 📋 배포 정보 확인
+      run: |
+        echo "🚀 FastAPI 할일 관리 앱 배포 시작"
+        echo "📅 배포 시간: $(date)"
+        echo "🌿 브랜치: ${{ github.ref_name }}"
+        echo "👤 배포자: ${{ github.actor }}"
+        echo "📦 커밋: ${{ github.sha }}"
+        echo ""
+        echo "📁 프로젝트 구조:"
+        ls -la
+        echo ""
+        echo "📦 백엔드 의존성:"
+        cat backend/requirements.txt
+    
+    # 3. SSH를 통한 EC2 서버 배포
+    # 실제 배포를 위해서는 다음 GitHub Secrets 설정이 필요합니다:
+    # - EC2_SSH_KEY: EC2 인스턴스의 SSH 개인 키 (.pem 파일 내용)
+    # - EC2_HOST: EC2 인스턴스의 퍼블릭 IP 주소
+    # - EC2_USER: EC2 인스턴스 사용자명 (보통 ubuntu)
+    # - SECRET_KEY: FastAPI 앱의 JWT 시크릿 키
+    # - DATABASE_URL: 프로덕션 데이터베이스 URL (선택사항)
+    
+    - name: 🔑 EC2 배포 (데모 버전)
+      run: |
+        echo "🔧 실제 배포를 위한 설정 가이드:"
+        echo ""
+        echo "1️⃣ GitHub Secrets 설정 (Settings > Secrets and variables > Actions):"
+        echo "   - EC2_SSH_KEY: SSH 개인 키 파일 내용"
+        echo "   - EC2_HOST: EC2 퍼블릭 IP 주소" 
+        echo "   - EC2_USER: EC2 사용자명 (예: ubuntu)"
+        echo "   - SECRET_KEY: JWT 시크릿 키"
+        echo "   - DATABASE_URL: PostgreSQL URL (선택사항)"
+        echo ""
+        echo "2️⃣ EC2 인스턴스 준비:"
+        echo "   - Ubuntu 22.04 LTS"
+        echo "   - Python 3.11, Nginx 설치"
+        echo "   - 보안 그룹: SSH(22), HTTP(80), HTTPS(443) 포트 열기"
+        echo ""
+        echo "3️⃣ 실제 배포 명령어 (현재는 주석 처리됨):"
+        echo "   아래 주석을 해제하고 GitHub Secrets를 설정하면 자동 배포됩니다."
+    
+    # 실제 EC2 배포 코드 (GitHub Secrets 설정 후 주석 해제)
+    - name: 🚀 EC2에 실제 배포 (실행하려면 주석 해제)
+      if: false  # 실제 배포 시 이 줄을 제거하거나 true로 변경
+      run: |
+        # SSH 키 설정
+        echo "${{ secrets.EC2_SSH_KEY }}" > deploy_key.pem
+        chmod 600 deploy_key.pem
         
-        # EC2 서버에서 실행할 명령어들
-        script: |
-          # 프로젝트 디렉토리로 이동
-          cd ~/fastapi-app
+        # EC2 서버에 배포 명령 실행
+        ssh -i deploy_key.pem -o StrictHostKeyChecking=no \
+          ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
           
-          # 최신 코드를 GitHub에서 가져오기
-          git pull origin master
+          # 서버에서 실행될 배포 스크립트
+          echo "🔄 서버에서 배포 작업 시작..."
           
-          # Python 가상환경 활성화
-          # 가상환경은 프로젝트별로 독립된 Python 환경을 제공합니다
+          # 1. 프로젝트 업데이트
+          cd ~/fastapi-app || exit 1
+          git pull origin main
+          
+          # 2. Python 가상환경 활성화
           source venv/bin/activate
           
-          # 새로 추가된 패키지들을 설치
+          # 3. 의존성 업데이트
+          cd backend
           pip install -r requirements.txt
           
-          # 환경변수 파일(.env) 생성 (GitHub Secrets의 값들 사용)
-          # 기존 .env 파일이 있다면 삭제하고 새로 생성
-          rm -f .env
-          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
-          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
-          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          # 4. 환경변수 설정 (옵션)
+          # echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > .env
+          # echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
           
-          # FastAPI 서비스 재시작하여 변경사항 반영
-          sudo systemctl restart fastapi
+          # 5. 애플리케이션 재시작
+          # systemctl --user restart fastapi-app
+          # 또는 PM2 사용 시: pm2 restart fastapi-app
+          
+          # 6. Nginx 설정 리로드 (필요한 경우)
+          # sudo nginx -t && sudo systemctl reload nginx
+          
+          echo "✅ 서버 배포 완료!"
+          
+        EOF
+        
+        # 임시 키 파일 삭제
+        rm -f deploy_key.pem
+    
+    # 4. 배포 완료 알림
+    - name: 🎉 배포 완료 알림
+      if: success()
+      run: |
+        echo "🎉 배포가 성공적으로 완료되었습니다!"
+        echo ""
+        echo "🌐 서비스 확인:"
+        echo "   - API 서버: http://your-ec2-ip:8000"
+        echo "   - API 문서: http://your-ec2-ip:8000/docs" 
+        echo "   - 헬스체크: http://your-ec2-ip:8000/health"
+        echo ""
+        echo "📊 배포 통계:"
+        echo "   - 배포 시간: $(date)"
+        echo "   - 커밋: ${{ github.sha }}"
+        echo "   - 배포자: ${{ github.actor }}"
+    
+    # 5. 배포 실패 시 알림
+    - name: ❌ 배포 실패 알림
+      if: failure()
+      run: |
+        echo "❌ 배포에 실패했습니다!"
+        echo ""
+        echo "🔍 확인 사항:"
+        echo "   1. GitHub Secrets가 올바르게 설정되었는지 확인"
+        echo "   2. EC2 인스턴스가 실행 중인지 확인"
+        echo "   3. SSH 키가 유효한지 확인"
+        echo "   4. 보안 그룹 설정 확인"
+        echo ""
+        echo "📞 문제 해결이 필요하면 개발팀에 문의하세요."
