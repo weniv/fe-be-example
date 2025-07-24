@@ -1,12 +1,12 @@
 # FastAPI 부트캠프 프로젝트 - Step 7: 배포 준비
 
-이 단계에서는 애플리케이션을 배포할 준비를 합니다.
+이 단계에서는 애플리케이션을 실제 서버에 배포할 수 있도록 환경 설정과 보안을 강화합니다.
 
 ## 학습 목표
-- 환경변수 설정
-- 프로덕션 실행 스크립트
-- 보안 설정
-- 배포 체크리스트
+- **환경변수 관리**: 개발/프로덕션 설정 분리
+- **보안 강화**: 민감한 정보 보호 및 CORS 설정
+- **배포 체크리스트**: 실제 배포 전 확인사항
+- **모니터링 준비**: 헬스체크 엔드포인트 구현
 
 ## 프로젝트 구조
 ```
@@ -14,462 +14,222 @@ fastapi-bootcamp/
 ├── backend/
 │   ├── app/
 │   │   ├── __init__.py
-│   │   ├── main.py
+│   │   ├── main.py          # 환경변수 지원 추가
 │   │   ├── database.py
 │   │   ├── models.py
 │   │   └── crud.py
-│   └── requirements.txt
+│   └── requirements.txt     # python-dotenv 포함
 ├── frontend/
-│   ├── todo.html
-│   ├── simple-style.css
-│   └── simple-script.js
-├── .gitignore
-├── simple.env.example
-├── run_dev.sh / run_dev.bat
-├── run_production.sh
+│   ├── index.html
+│   ├── style.css
+│   └── script.js
+├── .env.example             # 환경변수 템플릿 (새로 추가)
+├── .gitignore              # Git 제외 파일 목록 (새로 추가)
 └── README.md
 ```
 
-## 새로 추가된 내용
+## 새로 추가된 배포 준비 기능
 
-### 환경설정 파일
-- **simple.env.example**: 환경변수 템플릿
-- **.gitignore**: Git에서 제외할 파일 목록
+### 1. 환경변수 지원 (.env.example)
+```bash
+# 서버 환경 설정
+ENVIRONMENT=development
 
-### 실행 스크립트
-- **run_dev.sh/bat**: 개발 환경 실행 (백엔드 + 프론트엔드)
-- **run_production.sh**: 프로덕션 환경 실행
+# JWT 보안 키 (프로덕션에서는 반드시 변경!)
+SECRET_KEY=your-super-secret-jwt-key-change-in-production-please
 
-### requirements.txt 업데이트
-- python-multipart: 파일 업로드 지원
-- python-dotenv: 환경변수 관리
+# 데이터베이스 설정
+DATABASE_URL=sqlite:///./todos.db
+
+# CORS 설정 (프로덕션에서는 특정 도메인만 허용)
+ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+
+# 서버 포트 설정
+PORT=8000
+
+# 프론트엔드 URL (배포 시 실제 도메인으로 변경)
+FRONTEND_URL=http://localhost:3000
+```
+
+### 2. 백엔드 보안 강화 (main.py)
+- **환경별 CORS 설정**: 개발/프로덕션 환경에 따른 다른 CORS 정책
+- **환경변수 로드**: `python-dotenv`를 사용한 설정 관리
+- **헬스체크 엔드포인트**: 배포 모니터링을 위한 `/health` 엔드포인트
+- **포트 설정**: 환경변수에서 포트 번호 가져오기
+
+### 3. .gitignore 파일
+- **보안 파일 제외**: `.env`, 데이터베이스 파일, 로그 파일
+- **개발 환경 파일**: IDE 설정, 캐시 파일, 임시 파일
+- **Python 관련 파일**: `__pycache__`, `.pyc` 파일 등
 
 ## 배포 준비 체크리스트
 
+### 🔧 환경 설정
+- [ ] `.env.example`을 복사하여 `.env` 파일 생성
+- [ ] 프로덕션용 `SECRET_KEY` 생성 및 설정
+- [ ] 실제 도메인으로 `ALLOWED_ORIGINS` 설정
+- [ ] 데이터베이스 URL 설정 (프로덕션용)
+
+### 🔐 보안 확인
+- [ ] `.env` 파일이 `.gitignore`에 포함되어 있는지 확인
+- [ ] 하드코딩된 민감한 정보가 없는지 코드 점검
+- [ ] CORS 설정이 프로덕션 환경에 맞게 제한되어 있는지 확인
+- [ ] SECRET_KEY가 충분히 복잡하고 안전한지 확인
+
+### 📦 의존성 관리
+- [ ] `requirements.txt`에 모든 필요한 패키지가 포함되어 있는지 확인
+- [ ] 패키지 버전이 고정되어 있는지 확인 (보안 및 안정성)
+
+## 실행 방법
+
 ### 1. 환경변수 설정
 ```bash
-cp simple.env.example .env
-# .env 파일을 열어서 실제 값으로 수정
-```
-
-### 2. 데이터베이스 준비
-- 개발: SQLite (자동 생성)
-- 프로덕션: PostgreSQL 권장
-
-### 3. 보안 확인
-- [ ] .env 파일이 .gitignore에 포함되어 있는지 확인
-- [ ] CORS 설정 확인 (프로덕션에서는 특정 도메인만 허용)
-- [ ] 민감한 정보가 코드에 하드코딩되어 있지 않은지 확인
-
-### 4. 실행 방법
-
-#### 개발 환경 (Windows)
-```bash
-run_dev.bat
-```
-
-#### 개발 환경 (Mac/Linux)
-```bash
-chmod +x run_dev.sh
-./run_dev.sh
-```
-
-#### 프로덕션 환경
-```bash
-chmod +x run_production.sh
-./run_production.sh
-```
-
-## 배포 옵션
-
-### 1. 로컬 서버
-- 현재 설정으로 바로 실행 가능
-- 포트 포워딩 필요
-
-### 2. 클라우드 서비스
-- AWS EC2
-- Heroku
-- Railway
-- Render
-
-### 3. VPS
-- DigitalOcean
-- Linode
-- Vultr
-
-## 프로덕션 고려사항
-
-1. **데이터베이스**: SQLite → PostgreSQL/MySQL
-2. **웹서버**: Nginx 리버스 프록시 추천
-3. **프로세스 관리**: systemd 또는 supervisor
-4. **HTTPS**: Let's Encrypt 인증서
-5. **모니터링**: 로그 수집 및 모니터링 도구
-
-## 다음 단계
-Step 8에서는 GitHub Actions를 사용한 CI/CD를 설정합니다.
-
-## 🚀 빠른 시작
-
-### 📋 사전 요구사항
-
-- **Python 3.11** 이상
-- **Git** - 버전 관리
-- **텍스트 에디터** (VS Code 권장)
-
-### 📂 프로젝트 구조
-
-```
-fe-be-example/
-├── 📁 app/                     # 🐍 백엔드 애플리케이션
-│   ├── __init__.py             # 패키지 초기화 파일
-│   ├── main.py                 # 🚀 FastAPI 메인 애플리케이션
-│   ├── models.py               # 🗄️ 데이터베이스 모델 (User, Todo)
-│   ├── database.py             # 🔌 데이터베이스 연결 설정
-│   ├── crud.py                 # 📊 CRUD 작업 및 Pydantic 스키마
-│   └── auth.py                 # 🔐 JWT 인증 시스템
-├── 📁 frontend/                # 🌐 프론트엔드 애플리케이션
-│   ├── home.html               # 🏠 홈페이지 (랜딩 페이지)
-│   ├── login.html              # 🔑 로그인 페이지
-│   ├── signup.html             # ✍️ 회원가입 페이지
-│   ├── index.html              # 📋 할일 관리 메인 페이지
-│   ├── style.css               # 🎨 통합 스타일시트
-│   ├── auth.js                 # 🔐 인증 관련 JavaScript
-│   └── script.js               # 📝 할일 관리 JavaScript
-├── 📁 .github/workflows/       # ⚙️ GitHub Actions
-│   └── deploy.yml              # 🚀 자동 배포 워크플로우
-├── requirements.txt            # 📦 Python 의존성
-├── .env.example               # 🔧 환경변수 템플릿
-├── .gitignore                 # 🚫 Git 제외 파일
-└── README.md                  # 📖 프로젝트 문서
-```
-
-## ⚙️ 환경 설정
-
-### 1. 프로젝트 클론
-
-```bash
-git clone <repository-url>
-cd fe-be-example
-```
-
-### 2. 환경변수 설정
-
-`.env.example` 파일을 복사하여 `.env` 파일을 생성하세요:
-
-```bash
+# .env.example을 복사하여 .env 파일 생성
 cp .env.example .env
+
+# .env 파일을 열어서 실제 값으로 수정
+# 특히 SECRET_KEY와 ALLOWED_ORIGINS는 반드시 변경!
 ```
 
-`.env` 파일 내용 예시:
-
+### 2. 개발 환경 실행
 ```bash
-# 🔐 JWT 보안 설정
-SECRET_KEY=your-super-secret-jwt-key-change-in-production
-
-# 💾 데이터베이스 설정 (로컬 개발용)
-DATABASE_URL=sqlite:///./todos.db
-
-# 🌐 AWS Lightsail 데이터베이스 사용 시 (실제 값으로 변경)
-# DATABASE_URL=postgresql://username:password@host:5432/todos_db
-# DB_USER=your_username
-# DB_PASSWORD=your_password
-# DB_HOST=your-lightsail-db-host
-# DB_PORT=5432
-# DB_NAME=todos_db
-```
-
-> ⚠️ **보안 주의**: `.env` 파일은 절대 Git에 올리지 마세요!
-
-### 3. 백엔드 실행
-
-```bash
-# 가상환경 생성 및 활성화
-python -m venv venv
-
-# Windows
-venv\Scripts\activate
-# Mac/Linux  
-source venv/bin/activate
-
-# 의존성 설치
+# 백엔드 실행
+cd backend
 pip install -r requirements.txt
-
-# FastAPI 서버 실행 (개발 모드)
 uvicorn app.main:app --reload
-```
 
-서버가 실행되면:
-
-- 🌐 **API 서버**: http://localhost:8000
-- 📚 **API 문서 (Swagger)**: http://localhost:8000/docs
-- 📖 **API 문서 (ReDoc)**: http://localhost:8000/redoc
-
-### 4. 프론트엔드 실행
-
-```bash
-# frontend 디렉토리로 이동
+# 프론트엔드 실행 (별도 터미널)
 cd frontend
-
-# Python HTTP 서버 실행
 python -m http.server 3000
 ```
 
-프론트엔드 접속:
-
-- 🏠 **홈페이지**: http://localhost:3000/home.html
-- 🔑 **로그인**: http://localhost:3000/login.html
-- ✍️ **회원가입**: http://localhost:3000/signup.html
-- 📋 **할일 관리**: http://localhost:3000/index.html
-
-## 🎮 사용법
-
-### 1. 첫 사용자 등록
-
-1. **홈페이지 접속**: http://localhost:3000/home.html
-2. **"회원가입하기"** 버튼 클릭
-3. **사용자 정보 입력**:
-    - 사용자명 (3자 이상)
-    - 이메일 주소
-    - 비밀번호 (6자 이상)
-    - 비밀번호 확인
-4. **회원가입 완료** 후 자동으로 로그인 페이지로 이동
-
-### 2. 로그인
-
-1. **로그인 페이지**에서 사용자명과 비밀번호 입력
-2. **JWT 토큰 발급** 및 자동 저장
-3. **할일 관리 페이지**로 자동 이동
-
-### 3. 할일 관리
-
-#### 할일 추가
-
-- 제목 입력 (필수)
-- 설명 입력 (선택)
-- 우선순위 선택 (높음/보통/낮음)
-- "추가" 버튼 클릭 또는 Enter 키
-
-#### 할일 관리
-
-- **완료 토글**: "완료" 버튼으로 상태 변경
-- **검색**: 실시간 제목/설명 검색
-- **삭제**: "삭제" 버튼 (확인 대화상자)
-- **우선순위별 정렬**: 자동으로 높은 우선순위부터 표시
-
-### 4. 로그아웃
-
-- 상단 **"로그아웃"** 버튼 클릭
-- JWT 토큰 자동 삭제
-- 로그인 페이지로 리다이렉트
-
-## 🔌 API 엔드포인트
-
-### 🔐 인증 관련
-
-| 메서드    | 엔드포인트     | 설명              | 인증 필요 |
-|--------|-----------|-----------------|-------|
-| `POST` | `/signup` | 회원가입            | ❌     |
-| `POST` | `/login`  | 로그인 (JWT 토큰 발급) | ❌     |
-| `GET`  | `/me`     | 현재 사용자 정보 조회    | ✅     |
-
-### 📝 할일 관리
-
-| 메서드      | 엔드포인트         | 설명         | 인증 필요 |
-|----------|---------------|------------|-------|
-| `GET`    | `/todos/`     | 내 할일 목록 조회 | ✅     |
-| `POST`   | `/todos/`     | 새 할일 생성    | ✅     |
-| `GET`    | `/todos/{id}` | 특정 할일 조회   | ✅     |
-| `PUT`    | `/todos/{id}` | 할일 수정      | ✅     |
-| `DELETE` | `/todos/{id}` | 할일 삭제      | ✅     |
-
-### 📋 API 사용 예시
-
-#### 회원가입
-
+### 3. 프로덕션 환경 설정 예시
 ```bash
-curl -X POST "http://localhost:8000/signup" \
-     -H "Content-Type: application/json" \
-     -d '{
-       "username": "testuser",
-       "email": "test@example.com", 
-       "password": "securepassword"
-     }'
+# .env 파일에 프로덕션 설정
+ENVIRONMENT=production
+SECRET_KEY=very-secure-random-string-for-production
+DATABASE_URL=postgresql://user:password@host:5432/todos_db
+ALLOWED_ORIGINS=https://yourdomain.com,https://www.yourdomain.com
+PORT=8000
 ```
 
-#### 로그인
+## 배포 옵션 및 고려사항
 
+### 1. 클라우드 플랫폼
+#### AWS EC2
+- **장점**: 완전한 제어권, 확장성
+- **설정**: Ubuntu 22.04 LTS, Nginx 리버스 프록시
+- **보안**: Security Group, SSL/TLS 인증서
+
+#### Heroku
+- **장점**: 간단한 배포, 자동 확장
+- **설정**: `Procfile` 필요, PostgreSQL 애드온
+- **환경변수**: Heroku Dashboard에서 설정
+
+#### Railway/Render
+- **장점**: 모던 플랫폼, Git 연동
+- **설정**: `railway.json` 또는 설정 파일
+- **무료 티어**: 개발/테스트 용도로 적합
+
+### 2. 데이터베이스 마이그레이션
 ```bash
-curl -X POST "http://localhost:8000/login" \
-     -H "Content-Type: application/json" \
-     -d '{
-       "username": "testuser",
-       "password": "securepassword"
-     }'
+# 개발: SQLite (현재)
+DATABASE_URL=sqlite:///./todos.db
+
+# 프로덕션: PostgreSQL (권장)
+DATABASE_URL=postgresql://username:password@host:5432/database_name
 ```
 
-#### 할일 생성 (인증 필요)
+### 3. 웹서버 설정 (Nginx 예시)
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com;
 
+    location / {
+        root /path/to/frontend;
+        try_files $uri $uri/ =404;
+    }
+
+    location /api {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+
+## 모니터링 및 로그
+
+### 헬스체크 엔드포인트
 ```bash
-curl -X POST "http://localhost:8000/todos/" \
-     -H "Content-Type: application/json" \
-     -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-     -d '{
-       "title": "FastAPI 공부하기",
-       "description": "부트캠프 과제 완성",
-       "priority": 1
-     }'
+# 서버 상태 확인
+curl http://localhost:8000/health
+
+# 응답 예시
+{
+  "status": "healthy",
+  "environment": "development",
+  "message": "서버가 정상적으로 실행 중입니다"
+}
 ```
 
-## 🚀 AWS EC2 배포
+### 로그 모니터링
+- **개발**: 콘솔 출력으로 충분
+- **프로덕션**: 로그 파일 관리, 로그 로테이션 설정
+- **모니터링 도구**: Prometheus, Grafana, ELK Stack
 
-### 🔧 EC2 설정
+## 보안 베스트 프랙티스
 
-1. **EC2 인스턴스 생성**
-    - **AMI**: Ubuntu 22.04 LTS
-    - **인스턴스 타입**: t2.micro (프리 티어)
-    - **키 페어**: 새로 생성 및 다운로드 (.pem)
+### 1. SECRET_KEY 생성
+```python
+# Python으로 안전한 키 생성
+import secrets
+secret_key = secrets.token_urlsafe(32)
+print(secret_key)
+```
 
-2. **보안 그룹 설정**
-   ```
-   - SSH (22): 내 IP만 허용
-   - HTTP (80): 모든 소스 (0.0.0.0/0)
-   - HTTPS (443): 모든 소스 (0.0.0.0/0)
-   - Custom TCP (8000): 모든 소스 (개발/테스트용)
-   ```
-
-3. **EC2 접속**
-   ```bash
-   chmod 400 your-key.pem
-   ssh -i your-key.pem ubuntu@your-ec2-ip
-   ```
-
-### 🛠️ 서버 환경 구성
-
+### 2. HTTPS 설정
 ```bash
-# 시스템 업데이트
-sudo apt update && sudo apt upgrade -y
-
-# 필수 패키지 설치
-sudo apt install python3-pip python3-venv nginx git -y
-
-# 프로젝트 클론
-git clone https://github.com/your-username/your-repo.git ~/fastapi-app
-cd ~/fastapi-app
-
-# Python 환경 설정
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+# Let's Encrypt 인증서 (무료)
+sudo certbot --nginx -d yourdomain.com
 ```
 
-### ⚙️ GitHub Actions 배포 설정
-
-**GitHub Secrets** 설정 (Settings > Secrets and variables > Actions):
-
-```
-🔑 EC2 접속
-- EC2_SSH_KEY: .pem 키 파일 전체 내용
-- EC2_HOST: EC2 퍼블릭 IP 주소
-- EC2_USER: ubuntu
-
-🗄️ 데이터베이스 (선택사항)
-- DATABASE_URL: PostgreSQL 연결 URL
-- DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
-
-🔐 보안
-- SECRET_KEY: JWT 서명용 비밀 키
-```
-
-**자동 배포 실행**:
-
+### 3. 방화벽 설정
 ```bash
-git add .
-git commit -m "Deploy to EC2"
-git push origin master  # master 브랜치에 push하면 자동 배포
+# UFW 방화벽 (Ubuntu)
+sudo ufw allow 22    # SSH
+sudo ufw allow 80    # HTTP
+sudo ufw allow 443   # HTTPS
+sudo ufw enable
 ```
 
-## 🎓 학습 목표
+## 문제 해결
 
-### 백엔드 개발
+### 환경변수가 로드되지 않는 경우
+1. `.env` 파일이 프로젝트 루트에 있는지 확인
+2. `python-dotenv`가 설치되어 있는지 확인
+3. 환경변수 이름과 값에 공백이 없는지 확인
 
-- ✅ **FastAPI 고급 기능** - 의존성 주입, 미들웨어, 예외 처리
-- ✅ **JWT 인증 시스템** - 토큰 생성, 검증, 갱신
-- ✅ **SQLAlchemy ORM** - 관계형 모델링, 세션 관리
-- ✅ **보안 베스트 프랙티스** - 비밀번호 해싱, CORS, 환경변수
-- ✅ **API 설계** - RESTful 원칙, 스키마 검증
+### CORS 오류가 발생하는 경우
+1. `ALLOWED_ORIGINS` 설정이 올바른지 확인
+2. 프론트엔드 도메인이 정확히 포함되어 있는지 확인
+3. 프로토콜(`http://` vs `https://`)이 일치하는지 확인
 
-### 프론트엔드 개발
+### 데이터베이스 연결 오류
+1. `DATABASE_URL` 형식이 올바른지 확인
+2. 데이터베이스 서버가 실행 중인지 확인
+3. 네트워크 연결 및 방화벽 설정 확인
 
-- ✅ **모던 JavaScript** - ES6+, Fetch API, Promise/async-await
-- ✅ **SPA 라우팅** - 클라이언트 사이드 네비게이션
-- ✅ **상태 관리** - 로컬 스토리지, 토큰 관리
-- ✅ **반응형 디자인** - CSS Grid, Flexbox, 미디어 쿼리
-- ✅ **사용자 경험** - 로딩 상태, 에러 처리, 폼 검증
+## 다음 단계 미리보기
+Step 8에서는 GitHub Actions를 사용한 CI/CD 파이프라인을 구축하여 자동 배포를 설정합니다.
 
-### DevOps & 배포
+## 🎯 이 단계에서 배운 내용
 
-- ✅ **클라우드 배포** - AWS EC2, Nginx 설정
-- ✅ **CI/CD 파이프라인** - GitHub Actions, 자동화
-- ✅ **환경 관리** - 개발/스테이징/프로덕션 분리
-- ✅ **보안 설정** - SSH 키, 환경변수, 방화벽
+- ✅ **환경변수 관리**: 개발과 프로덕션 설정 분리
+- ✅ **보안 강화**: 민감한 정보 보호와 적절한 CORS 설정
+- ✅ **배포 준비**: 실제 배포를 위한 체크리스트와 설정
+- ✅ **모니터링**: 헬스체크 엔드포인트로 서버 상태 확인
+- ✅ **베스트 프랙티스**: 보안과 운영을 고려한 코드 작성
 
-## 🔄 확장 아이디어
-
-### 단기 개선사항
-
-- 📱 **모바일 앱** - React Native/Flutter
-- 🌙 **다크 모드** - 테마 전환 기능
-- 📊 **할일 통계** - 완료율, 생산성 차트
-- 🔔 **알림 시스템** - 브라우저 푸시 알림
-
-### 장기 확장
-
-- 👥 **팀 협업** - 할일 공유, 팀 관리
-- 🔄 **실시간 동기화** - WebSocket, 멀티 디바이스
-- 🤖 **AI 기능** - 스마트 우선순위, 일정 추천
-- 📈 **고급 분석** - 생산성 인사이트, 리포팅
-
-## 🤝 기여하기
-
-1. **Fork** 이 저장소
-2. **Feature 브랜치** 생성 (`git checkout -b feature/AmazingFeature`)
-3. **변경사항 커밋** (`git commit -m 'Add some AmazingFeature'`)
-4. **브랜치에 Push** (`git push origin feature/AmazingFeature`)
-5. **Pull Request** 생성
-
-## 📄 라이선스
-
-이 프로젝트는 교육 목적으로 자유롭게 사용할 수 있습니다.
-
-## 🆘 문제 해결
-
-### 일반적인 문제들
-
-**Q: JWT 토큰이 만료되었다는 에러가 나요**
-A: 토큰은 30분 후 만료됩니다. 로그아웃 후 다시 로그인하세요.
-
-**Q: CORS 에러가 발생해요**
-A: 백엔드가 실행 중인지 확인하고, API_BASE_URL이 올바른지 확인하세요.
-
-**Q: 데이터베이스 연결 오류**
-A: .env 파일의 DATABASE_URL이 올바른지 확인하세요.
-
-**Q: GitHub Actions 배포가 실패해요**
-A: GitHub Secrets가 모두 올바르게 설정되었는지 확인하세요.
-
----
-
-## 🎉 완성을 축하합니다!
-
-이 프로젝트를 완성하신 것을 축하드립니다! 이제 여러분은:
-
-- 🏗️ **풀스택 개발자**로서 백엔드와 프론트엔드를 모두 다룰 수 있습니다
-- 🔐 **보안 인식**을 갖춘 개발자가 되었습니다
-- ☁️ **클라우드 배포** 경험을 쌓았습니다
-- 🤖 **자동화된 워크플로우**를 구축할 수 있습니다
-
-**다음 스텝**: 포트폴리오에 추가하고, 더 큰 프로젝트에 도전해보세요! 🚀
-
----
-
-**Happy Coding! 💻✨**
+이제 애플리케이션이 실제 서버에 배포할 준비가 완료되었습니다! 🚀

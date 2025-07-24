@@ -1,66 +1,79 @@
 # Python 관련 파일들
-# __pycache__: Python이 컴파일한 바이트코드 파일들이 저장되는 폴더
 __pycache__/
 *.py[cod]
 *$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# 가상환경 폴더들 (절대 git에 올리면 안됨!)
-# 가상환경은 각자의 컴퓨터에서 새로 만들어야 합니다
+# 가상 환경
 venv/
 env/
 ENV/
 .venv/
-.claude
-CLAUDE.md
-# 환경변수 파일 (민감한 정보 포함, 절대 git에 올리면 안됨!)
-# 데이터베이스 비밀번호, API 키 등이 들어있습니다
+.env/
+
+# 환경변수 파일 (보안상 중요!)
 .env
 .env.local
-.env.*.local
+.env.production
+.env.staging
 
-# SQLite 데이터베이스 파일 (로컬 개발용)
-# 실제 데이터가 들어있으므로 git에 올리지 않습니다
+# 데이터베이스 파일
 *.db
 *.sqlite
 *.sqlite3
+todos.db
 
-# IDE/에디터 설정 파일들
-# 각자 다른 에디터를 사용하므로 설정 파일은 공유하지 않습니다
+# IDE 관련 파일
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# 운영체제 생성 파일들
-# macOS
+# 로그 파일
+logs/
+*.log
+
+# 운영 체제 관련 파일
 .DS_Store
 .DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
-
-# Windows
-Thumbs.db
 ehthumbs.db
-Desktop.ini
+Thumbs.db
 
-# 로그 파일들
-# 애플리케이션 실행 중 생성되는 로그들
-*.log
-logs/
-
-# 테스트 관련 파일들
-.coverage
-.pytest_cache/
-htmlcov/
-
-# 빌드 관련 파일들
-build/
-dist/
-*.egg-info/
-
-# 임시 파일들
+# 임시 파일
 *.tmp
 *.temp
 .cache/
+
+# 백업 파일
+*.bak
+*.backup
+
+# 테스트 커버리지
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
