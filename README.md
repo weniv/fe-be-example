@@ -1,12 +1,12 @@
-# FastAPI 부트캠프 프로젝트 - Step 6: API 연동
+# FastAPI 부트캠프 프로젝트 - Step 7: 배포 준비
 
-이 단계에서는 프론트엔드와 백엔드 API를 연동합니다.
+이 단계에서는 애플리케이션을 배포할 준비를 합니다.
 
 ## 학습 목표
-- Fetch API 사용법
-- async/await 비동기 처리
-- CORS 이해
-- 에러 처리
+- 환경변수 설정
+- 프로덕션 실행 스크립트
+- 보안 설정
+- 배포 체크리스트
 
 ## 프로젝트 구조
 ```
@@ -23,69 +23,90 @@ fastapi-bootcamp/
 │   ├── todo.html
 │   ├── simple-style.css
 │   └── simple-script.js
+├── .gitignore
+├── simple.env.example
+├── run_dev.sh / run_dev.bat
+├── run_production.sh
 └── README.md
 ```
 
-## 수정된 내용
+## 새로 추가된 내용
 
-### frontend/simple-script.js
-- **API 연동 추가**:
-  - `loadTodos()`: 서버에서 할일 목록 불러오기
-  - `addTodo()`: 서버에 새 할일 추가
-  - `toggleTodo()`: 서버에서 할일 상태 변경
-  - `deleteTodo()`: 서버에서 할일 삭제
+### 환경설정 파일
+- **simple.env.example**: 환경변수 템플릿
+- **.gitignore**: Git에서 제외할 파일 목록
 
-- **헬퍼 함수 추가**:
-  - `showLoading()`: 로딩 상태 표시
-  - `showError()`: 에러 메시지 표시
+### 실행 스크립트
+- **run_dev.sh/bat**: 개발 환경 실행 (백엔드 + 프론트엔드)
+- **run_production.sh**: 프로덕션 환경 실행
 
-## 실행 방법
+### requirements.txt 업데이트
+- python-multipart: 파일 업로드 지원
+- python-dotenv: 환경변수 관리
 
-### 1. 백엔드 서버 실행
+## 배포 준비 체크리스트
+
+### 1. 환경변수 설정
 ```bash
-cd backend
-uvicorn app.main:app --reload
+cp simple.env.example .env
+# .env 파일을 열어서 실제 값으로 수정
 ```
 
-### 2. 프론트엔드 서버 실행
-별도의 터미널에서:
+### 2. 데이터베이스 준비
+- 개발: SQLite (자동 생성)
+- 프로덕션: PostgreSQL 권장
+
+### 3. 보안 확인
+- [ ] .env 파일이 .gitignore에 포함되어 있는지 확인
+- [ ] CORS 설정 확인 (프로덕션에서는 특정 도메인만 허용)
+- [ ] 민감한 정보가 코드에 하드코딩되어 있지 않은지 확인
+
+### 4. 실행 방법
+
+#### 개발 환경 (Windows)
 ```bash
-cd frontend
-python -m http.server 3000
+run_dev.bat
 ```
 
-### 3. 애플리케이션 사용
-- 브라우저에서 http://localhost:3000/todo.html 접속
-- 할일을 추가, 수정, 삭제해보세요
-- 데이터는 SQLite 데이터베이스에 저장됩니다
+#### 개발 환경 (Mac/Linux)
+```bash
+chmod +x run_dev.sh
+./run_dev.sh
+```
 
-## API 통신 흐름
+#### 프로덕션 환경
+```bash
+chmod +x run_production.sh
+./run_production.sh
+```
 
-1. **페이지 로드**: `loadTodos()` → GET /todos/
-2. **할일 추가**: `addTodo()` → POST /todos/
-3. **상태 변경**: `toggleTodo()` → PUT /todos/{id}
-4. **할일 삭제**: `deleteTodo()` → DELETE /todos/{id}
+## 배포 옵션
 
-## 주요 기능
+### 1. 로컬 서버
+- 현재 설정으로 바로 실행 가능
+- 포트 포워딩 필요
 
-### 구현된 기능
-- ✅ 실시간 API 통신
-- ✅ 데이터 영구 저장 (SQLite)
-- ✅ 로딩 상태 표시
-- ✅ 에러 처리
-- ✅ CORS 지원
+### 2. 클라우드 서비스
+- AWS EC2
+- Heroku
+- Railway
+- Render
 
-## 문제 해결
+### 3. VPS
+- DigitalOcean
+- Linode
+- Vultr
 
-### CORS 에러가 발생하는 경우
-백엔드의 CORS 설정을 확인하세요. main.py에 이미 설정되어 있습니다.
+## 프로덕션 고려사항
 
-### API 연결이 안 되는 경우
-1. 백엔드 서버가 실행 중인지 확인 (포트 8000)
-2. 프론트엔드의 API_BASE_URL이 올바른지 확인
+1. **데이터베이스**: SQLite → PostgreSQL/MySQL
+2. **웹서버**: Nginx 리버스 프록시 추천
+3. **프로세스 관리**: systemd 또는 supervisor
+4. **HTTPS**: Let's Encrypt 인증서
+5. **모니터링**: 로그 수집 및 모니터링 도구
 
 ## 다음 단계
-Step 7에서는 Docker를 사용하여 애플리케이션을 컨테이너화합니다.
+Step 8에서는 GitHub Actions를 사용한 CI/CD를 설정합니다.
 
 ## 🚀 빠른 시작
 
