@@ -1,72 +1,46 @@
-# 📝 FastAPI 부트캠프 프로젝트 - 할일 관리 애플리케이션
+# FastAPI 부트캠프 프로젝트 - Step 1: 프로젝트 설정
 
-## 🌟 프로젝트 개요
+이 단계에서는 프로젝트의 기본 구조를 설정합니다.
 
-이 프로젝트는 **JWT 인증 기능이 포함된** FastAPI와 JavaScript를 활용한 풀스택 웹 애플리케이션입니다. 실제 서비스와 유사한 사용자 인증, 개인별 데이터 관리, 그리고 AWS EC2 배포까지 전체
-개발 과정을 경험할 수 있는 실무형 부트캠프 프로젝트입니다.
+## 학습 목표
+- 프로젝트 디렉토리 구조 이해
+- Python 가상환경 설정
+- 기본 requirements.txt 작성
 
-### 🎯 주요 기능
+## 프로젝트 구조
+```
+fastapi-bootcamp/
+├── backend/
+│   └── requirements.txt
+├── frontend/
+└── README.md
+```
 
-#### 🔐 인증 시스템
+## 설정 방법
 
-- ✅ **JWT 토큰 기반 인증** - 안전한 사용자 인증
-- ✅ **회원가입/로그인/로그아웃** - 완전한 사용자 관리 시스템
-- ✅ **사용자별 데이터 격리** - 개인 할일만 접근 가능
-- ✅ **토큰 자동 갱신** - 원활한 사용자 경험
-- ✅ **보안 라우팅** - 인증 상태에 따른 페이지 보호
+### 1. 프로젝트 디렉토리 생성
+```bash
+mkdir backend
+mkdir frontend
+```
 
-#### 📋 할일 관리
+### 2. Python 가상환경 설정
+```bash
+python -m venv venv
+# Windows
+venv\Scripts\activate
+# Mac/Linux
+source venv/bin/activate
+```
 
-- ✅ **개인별 할일 CRUD** - 생성, 조회, 수정, 삭제
-- ✅ **우선순위 설정** (🔴 높음/🟡 보통/🟢 낮음) - 색상으로 구분
-- ✅ **실시간 검색** 기능 (제목, 설명 검색)
-- ✅ **한국 시간(KST) 기준** 생성일자 표시
-- ✅ **완료 상태 토글** - 직관적인 작업 관리
+### 3. 의존성 설치
+```bash
+cd backend
+pip install -r requirements.txt
+```
 
-#### 🎨 사용자 인터페이스
-
-- ✅ **현대적인 홈페이지** - 매력적인 랜딩 페이지
-- ✅ **반응형 디자인** - 모바일/태블릿/데스크톱 대응
-- ✅ **직관적인 UI/UX** - 사용자 친화적 인터페이스
-- ✅ **실시간 피드백** - 로딩, 에러, 성공 메시지
-
-#### ⚙️ 기술적 특징
-
-- ✅ **환경변수 기반 설정** (.env 파일 지원)
-- ✅ **다중 데이터베이스 지원** (SQLite/PostgreSQL)
-- ✅ **자동 API 문서화** (Swagger UI/ReDoc)
-- ✅ **AWS 클라우드 배포** 지원
-- ✅ **CI/CD 파이프라인** (GitHub Actions)
-
-### 🛠️ 기술 스택
-
-#### 백엔드
-
-- **FastAPI** - 현대적이고 빠른 Python 웹 프레임워크
-- **SQLAlchemy** - 강력한 Python ORM
-- **JWT (PyJWT + python-jose)** - 토큰 기반 인증
-- **Passlib + bcrypt** - 안전한 비밀번호 해싱
-- **Pydantic v2** - 고성능 데이터 검증
-- **Python-dotenv** - 환경변수 관리
-
-#### 데이터베이스
-
-- **SQLite** - 개발용 로컬 데이터베이스
-- **PostgreSQL** - 프로덕션용 (AWS Lightsail)
-
-#### 프론트엔드
-
-- **HTML5/CSS3** - 시맨틱 마크업 및 현대적 스타일링
-- **Vanilla JavaScript ES6+** - 순수 자바스크립트 (프레임워크 독립적)
-- **CSS Grid/Flexbox** - 반응형 레이아웃
-- **Fetch API** - 비동기 HTTP 통신
-
-#### 배포 & DevOps
-
-- **AWS EC2** - 클라우드 서버 호스팅
-- **Nginx** - 웹 서버 및 리버스 프록시
-- **GitHub Actions** - CI/CD 자동화
-- **SSH 배포** - 안전한 서버 배포
+## 다음 단계
+Step 2에서는 FastAPI 기본 애플리케이션을 작성합니다.
 
 ## 🚀 빠른 시작
 
